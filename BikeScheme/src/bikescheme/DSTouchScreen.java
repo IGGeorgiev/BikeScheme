@@ -94,7 +94,8 @@ public class DSTouchScreen extends AbstractIODevice {
     public void viewActivity() {
         logger.fine(getInstanceName());
         
-        viewActivityObserver.viewActivityReceived();    
+        viewActivityObserver.viewActivityReceived();
+        
     }
     
     /* 

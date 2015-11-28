@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * @author pbj
  *
  */
-public class DStation implements StartRegObserver, DPointObserver {
+public class DStation implements StartRegObserver, DPointObserver, ViewActivityObserver {
     public static final Logger logger = Logger.getLogger("bikescheme");
 
     private String instanceName;
@@ -52,6 +52,7 @@ public class DStation implements StartRegObserver, DPointObserver {
         
         touchScreen = new DSTouchScreen(instanceName + ".ts");
         touchScreen.setStartRegObserver(this);
+        touchScreen.setViewActivityObserver(this);
         
         cardReader = new CardReader(instanceName + ".cr");
         
@@ -129,6 +130,11 @@ public class DStation implements StartRegObserver, DPointObserver {
     public void setRemoveBikeObserver(ActionsForBikeAndUserObserver o){
         removeBikeObserver = o;
     }
+    
+    public void viewActivityRecieved(){
+        //TODO
+    }
+    
     @Override
     public void disassociateBikeFromUser(String bikeId) {
         // TODO Auto-generated method stub
