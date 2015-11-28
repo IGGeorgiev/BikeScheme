@@ -19,6 +19,7 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     private OKLight okLight;
     private String instanceName;
     private int index;
+    
     /**
      * 
      * Construct a Docking Point object with a key reader and green ok light
