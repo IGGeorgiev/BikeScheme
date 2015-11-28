@@ -19,7 +19,7 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     private OKLight okLight;
     private String instanceName;
     private int index;
- 
+    
     /**
      * 
      * Construct a Docking Point object with a key reader and green ok light
@@ -32,7 +32,6 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     public DPoint(String instanceName, int index) {
 
      // Construct and make connections with interface devices
-        
         keyReader = new KeyReader(instanceName + ".kr");
         keyReader.setObserver(this);
         okLight = new OKLight(instanceName + ".ok");
@@ -66,12 +65,14 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         
         okLight.flash();       
     }
-
+    
     @Override
     public void bikeDocked(String bikeId) {
         // TODO Auto-generated method stub
         
     }
+    
+    
     
  
 

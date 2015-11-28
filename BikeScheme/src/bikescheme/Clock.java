@@ -87,8 +87,12 @@ public class Clock extends AbstractInputDevice {
         errorDate = cal.getTime();   
         
          
-        instance = new Clock();
+        //instance = new Clock();
         
+    }
+    
+    public static void createInstance() {
+        instance = new Clock();        
     }
     
     private Clock() {
