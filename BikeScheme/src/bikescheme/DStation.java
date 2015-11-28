@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * @author pbj
  *
  */
-public class DStation implements StartRegObserver, DPointObserver {
+public class DStation implements StartRegObserver, DPointObserver, ViewActivityObserver {
     public static final Logger logger = Logger.getLogger("bikescheme");
 
     private String instanceName;
@@ -51,7 +51,8 @@ public class DStation implements StartRegObserver, DPointObserver {
         this.northPos = northPos;
         
         touchScreen = new DSTouchScreen(instanceName + ".ts");
-        touchScreen.setObserver(this);
+        touchScreen.setStartRegObserver(this);
+        touchScreen.setViewActivityObserver(this);
         
         cardReader = new CardReader(instanceName + ".cr");
         
@@ -96,10 +97,10 @@ public class DStation implements StartRegObserver, DPointObserver {
         logger.fine("Starting on instance " + getInstanceName());
         
         cardReader.requestCard();  // Generate output event
-        logger.fine("At position 1 on instance " + getInstanceName());
+        logger.fine("Card requested at " + getInstanceName());
         
         String cardDetails = cardReader.checkCard();    // Pull in non-triggering input event
-        logger.fine("At position 2 on instance " + getInstanceName());
+        logger.fine("Card read at " + getInstanceName());
         
         String keyId = keyIssuer.issueKey(); // Generate output event
         
@@ -117,18 +118,38 @@ public class DStation implements StartRegObserver, DPointObserver {
     public int getNorthPos() {
         return northPos;
     }
+  
+    //======================HANDLES ADD USER REQUESTS=========================
     
     private AddUserObserver addUserObserver;
     
-    public void addUserObserver(AddUserObserver o){
+    public void setAddUserObserver(AddUserObserver o){
         addUserObserver = o;
     }
+<<<<<<< HEAD
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
     private ActionsForBikeAndUserObserver removeBikeObserver ;
     //
+=======
+<<<<<<< HEAD
+    
+    //Bike-User actions observers:-----------------------------------------------------------
+    private ActionsForBikeAndUserObserver  removeBikeObserver ;
+    
+=======
+    //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
+    private ActionsForBikeAndUserObserver removeBikeObserver ;
+    //
+>>>>>>> refs/remotes/origin/master
+>>>>>>> refs/remotes/origin/master
     public void setRemoveBikeObserver(ActionsForBikeAndUserObserver o){
         removeBikeObserver = o;
     }
+    
+    public void viewActivityRecieved(){
+        //TODO
+    }
+    
     @Override
     public void disassociateBikeFromUser(String bikeId) {
         logger.fine(getInstanceName());

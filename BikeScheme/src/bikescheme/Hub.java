@@ -17,9 +17,16 @@ import java.util.logging.Logger;
  * @author pbj
  * 
  */
+<<<<<<< HEAD
 public class Hub implements AddDStationObserver, 
                     ActionsForBikeAndUserObserver, 
                     AddUserObserver {
+=======
+public class Hub implements AddDStationObserver,
+					ActionsForBikeAndUserObserver,
+					AddUserObserver,
+					ViewActivityDStationObserver {
+>>>>>>> refs/remotes/origin/master
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
@@ -99,7 +106,8 @@ public class Hub implements AddDStationObserver,
 
 		DStation newDStation = new DStation(instanceName, eastPos, northPos,numPoints);
 		dockingStationMap.put(instanceName, newDStation);
-		newDStation.setRemoveBikeObserver(this);//TODO
+		newDStation.setRemoveBikeObserver(this);
+		newDStation.setAddUserObserver(this);
 
 		// Now connect up DStation to event distributor and collector.
 
@@ -114,13 +122,25 @@ public class Hub implements AddDStationObserver,
 		return dockingStationMap.get(instanceName);
 	}
 	
-    
+	//====================ADDS USER TO USER LIST==============================
+	
     public void addUser(String keyId, String personalDetails, String cardDetails){
         logger.fine("Recording user in " + HUBNAME);
         User user = new User(keyId,personalDetails,cardDetails);
         users.add(user);
     }
+<<<<<<< HEAD
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
+=======
+    
+    private Bike findBikebyId(String bikeId){
+        for(Bike bike : bikes){
+            if(bike.getId().equals(bikeId))return bike;
+        }
+        return null;
+    }
+    
+>>>>>>> refs/remotes/origin/master
     @Override
     public void returnBike(String bikeId) {
         Bike bike = findBikebyId(bikeId);

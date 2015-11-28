@@ -57,7 +57,7 @@ public class DSTouchScreen extends AbstractIODevice {
     
     private StartRegObserver startRegObserver;
     
-    public void setObserver(StartRegObserver o) {
+    public void setStartRegObserver(StartRegObserver o) {
         startRegObserver = o;
     }
     
@@ -94,7 +94,8 @@ public class DSTouchScreen extends AbstractIODevice {
     public void viewActivity() {
         logger.fine(getInstanceName());
         
-        viewActivityObserver.viewActivityReceived();    
+        viewActivityObserver.viewActivityReceived();
+        
     }
     
     /* 
