@@ -13,7 +13,7 @@ package bikescheme;
 public class BikeSensor extends AbstractInputDevice {
 
 
-    private BikeDockingObserver observer;
+    private BikeDockingObserver BikeDockingObserver;
     
     /**
      * @param instanceName  
@@ -31,8 +31,8 @@ public class BikeSensor extends AbstractInputDevice {
     /**
      * @param o
      */
-    public void setObserver(BikeDockingObserver o) {
-        observer = o;
+    public void setBikeDockingObserver(BikeDockingObserver o) {
+        BikeDockingObserver = o;
     }
     
     /** 
@@ -62,7 +62,7 @@ public class BikeSensor extends AbstractInputDevice {
     public void dockBike(String keyId) {
         logger.fine(getInstanceName());
         
-        observer.bikeDocked(keyId);
+        BikeDockingObserver.bikeDocked(keyId);
     }
 
     /*

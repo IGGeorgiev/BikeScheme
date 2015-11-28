@@ -15,6 +15,8 @@ import java.util.logging.Logger;
 public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     public static final Logger logger = Logger.getLogger("bikescheme");
     
+    private BikeSensor bikeSensor;
+    private BikeLock bikeLock;
     private KeyReader keyReader; 
     private OKLight okLight;
     private String instanceName;
@@ -35,6 +37,9 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         keyReader = new KeyReader(instanceName + ".kr");
         keyReader.setObserver(this);
         okLight = new OKLight(instanceName + ".ok");
+        bikeLock = new BikeLock(instanceName+ ".bl");
+        bikeSensor = new BikeSensor(instanceName+ ".bs");
+        bikeSensor.setBikeDockingObserver(this);
         this.instanceName = instanceName;
         this.index = index;
     }
@@ -67,10 +72,10 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         okLight.flash();       
     }
     
-    private DPointObserver observer;
+    private DPointObserver dPointObserver;
     
-    public void setObserver(DPointObserver o){
-        observer = o;
+    public void setDPointObserver(DPointObserver o){
+        dPointObserver = o;
     }
     
     @Override
@@ -78,7 +83,8 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         // TODO Auto-generated method stub
         //decide which functions to call
         logger.fine(getInstanceName());
-        observer.disassociateBikeFromUser(bikeId);
+        dPointObserver.disassociateBikeFromUser(bikeId);
+        bikeLock.lock();
     }
  
 }
