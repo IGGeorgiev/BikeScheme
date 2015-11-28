@@ -118,12 +118,15 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     public int getNorthPos() {
         return northPos;
     }
+  
+    //======================HANDLES ADD USER REQUESTS=========================
     
     private AddUserObserver addUserObserver;
     
     public void setAddUserObserver(AddUserObserver o){
         addUserObserver = o;
     }
+    
     //Bike-User actions observers:-----------------------------------------------------------
     private ActionsForBikeAndUserObserver  removeBikeObserver ;
     
