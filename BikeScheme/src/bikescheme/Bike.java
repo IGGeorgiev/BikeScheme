@@ -6,4 +6,8 @@ public class Bike {
     public Bike(String bikeID){
         this.bikeID = bikeID;
     }
+    
+    public String getId(){
+        return bikeID;
+    }
 }
