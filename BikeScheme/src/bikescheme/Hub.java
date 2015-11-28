@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author pbj
  * 
  */
-public class Hub implements AddDStationObserver,ActionsForBikeAndUserObserver, AddUserObserver {
+public class Hub implements AddDStationObserver,ActionsForBikeAndUserObserver, AddUserObserver, ViewActivityDStationObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
@@ -112,6 +112,8 @@ public class Hub implements AddDStationObserver,ActionsForBikeAndUserObserver, A
 	public DStation getDStation(String instanceName) {
 		return dockingStationMap.get(instanceName);
 	}
+	
+	//====================ADDS USER TO USER LIST==============================
 	
     public void addUser(String keyId, String personalDetails, String cardDetails){
         logger.fine("Recording user in " + HUBNAME);
