@@ -17,8 +17,9 @@ import java.util.logging.Logger;
  * @author pbj
  * 
  */
-public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver {
+public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver, AddUserObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
+	
 	//String is the unique key in users
 	private List<Bike> bikes;
 	private List<User> users;
@@ -117,6 +118,10 @@ public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver {
         
     }
     
-
+    public void addUser(String keyId, String personalDetails, String cardDetails){
+        logger.fine("Recording user in " + HUBNAME);
+        User user = new User(keyId,personalDetails,cardDetails);
+        users.add(user);
+    }
 	
 }

@@ -25,6 +25,7 @@ public class DStation implements StartRegObserver, DPointObserver {
     private CardReader cardReader; 
     private KeyIssuer keyIssuer;
     private List<DPoint> dockingPoints;
+         
  
     /**
      * 
@@ -97,10 +98,12 @@ public class DStation implements StartRegObserver, DPointObserver {
         cardReader.requestCard();  // Generate output event
         logger.fine("At position 1 on instance " + getInstanceName());
         
-        cardReader.checkCard();    // Pull in non-triggering input event
+        String cardDetails = cardReader.checkCard();    // Pull in non-triggering input event
         logger.fine("At position 2 on instance " + getInstanceName());
         
-        keyIssuer.issueKey(); // Generate output event
+        String keyId = keyIssuer.issueKey(); // Generate output event
+        
+        addUserObserver.addUser(keyId, personalInfo, cardDetails);
     }
     
     public String getInstanceName() {
@@ -113,6 +116,12 @@ public class DStation implements StartRegObserver, DPointObserver {
     
     public int getNorthPos() {
         return northPos;
+    }
+    
+    private AddUserObserver addUserObserver;
+    
+    public void addUserObserver(AddUserObserver o){
+        addUserObserver = o;
     }
     
     private ActionsForBikeAndUserObserver  removeBikeObserver;
