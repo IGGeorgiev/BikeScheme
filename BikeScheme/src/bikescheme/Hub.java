@@ -19,7 +19,10 @@ import java.util.logging.Logger;
  */
 public class Hub implements AddDStationObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
-	
+	//String is the unique key in users
+	private Map<String,User> users;
+	private List<Bike> bikes;
+	private Map<String,Bike> associations; 
 	private HubTerminal terminal;
 	private HubDisplay display;
 	private Map<String, DStation> dockingStationMap;
@@ -40,7 +43,7 @@ public class Hub implements AddDStationObserver {
 		terminal.setObserver(this);
 		display = new HubDisplay("hd");
 		dockingStationMap = new HashMap<String, DStation>();
-
+		Clock.createInstance();
 		// Schedule timed notification for generating updates of
 		// hub display.
 
