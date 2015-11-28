@@ -57,7 +57,7 @@ public class DSTouchScreen extends AbstractIODevice {
     
     private StartRegObserver startRegObserver;
     
-    public void setObserver(StartRegObserver o) {
+    public void setStartRegObserver(StartRegObserver o) {
         startRegObserver = o;
     }
     

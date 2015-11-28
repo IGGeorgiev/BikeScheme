@@ -51,7 +51,7 @@ public class DStation implements StartRegObserver, DPointObserver {
         this.northPos = northPos;
         
         touchScreen = new DSTouchScreen(instanceName + ".ts");
-        touchScreen.setObserver(this);
+        touchScreen.setStartRegObserver(this);
         
         cardReader = new CardReader(instanceName + ".cr");
         
@@ -96,10 +96,10 @@ public class DStation implements StartRegObserver, DPointObserver {
         logger.fine("Starting on instance " + getInstanceName());
         
         cardReader.requestCard();  // Generate output event
-        logger.fine("At position 1 on instance " + getInstanceName());
+        logger.fine("Card requested at " + getInstanceName());
         
         String cardDetails = cardReader.checkCard();    // Pull in non-triggering input event
-        logger.fine("At position 2 on instance " + getInstanceName());
+        logger.fine("Card read at " + getInstanceName());
         
         String keyId = keyIssuer.issueKey(); // Generate output event
         
@@ -120,7 +120,7 @@ public class DStation implements StartRegObserver, DPointObserver {
     
     private AddUserObserver addUserObserver;
     
-    public void addUserObserver(AddUserObserver o){
+    public void setAddUserObserver(AddUserObserver o){
         addUserObserver = o;
     }
     
