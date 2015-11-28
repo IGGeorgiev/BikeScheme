@@ -114,11 +114,17 @@ public class DStation implements StartRegObserver, DPointObserver {
     public int getNorthPos() {
         return northPos;
     }
-
+    
+    private ActionsForBikeAndUserObserver  removeBikeObserver;
+    
+    public void setRemoveBikeObserver(ActionsForBikeAndUserObserver o){
+        removeBikeObserver = o;
+    }
     @Override
     public void disassociateBikeFromUser(String bikeId) {
         // TODO Auto-generated method stub
-        
+        logger.fine(getInstanceName());
+        removeBikeObserver.removeBikeFromUser(bikeId);
     }
  
 

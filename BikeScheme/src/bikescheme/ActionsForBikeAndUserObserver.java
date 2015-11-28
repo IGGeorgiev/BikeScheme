@@ -6,6 +6,6 @@ package bikescheme;
  * @author ivo
  *
  */
-public interface RemoveBikeFromUser {
+public interface ActionsForBikeAndUserObserver {
     public void removeBikeFromUser(String bikeId);
 }

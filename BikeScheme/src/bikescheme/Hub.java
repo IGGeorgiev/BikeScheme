@@ -17,12 +17,12 @@ import java.util.logging.Logger;
  * @author pbj
  * 
  */
-public class Hub implements AddDStationObserver, RemoveBikeFromUser {
+public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	//String is the unique key in users
-	private Map<String,User> users;
+	private List<User> users;
 	private List<Bike> bikes;
-	private Map<String,Bike> associations; 
+	private Map<User,Bike> associations; 
 	private HubTerminal terminal;
 	private HubDisplay display;
 	private Map<String, DStation> dockingStationMap;
@@ -109,12 +109,14 @@ public class Hub implements AddDStationObserver, RemoveBikeFromUser {
 	public DStation getDStation(String instanceName) {
 		return dockingStationMap.get(instanceName);
 	}
+	
 
     @Override
     public void removeBikeFromUser(String bikeId) {
-        // TODO When Ivan finishes User classes and 
+        // TODO Auto-generated method stub
         
     }
+    
 
 	
 }

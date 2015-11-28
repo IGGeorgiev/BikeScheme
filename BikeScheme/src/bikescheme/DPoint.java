@@ -55,12 +55,7 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         return index;
     }
     
-    private DPointObserver observer;
-    
-    public void setObserver(DPointObserver o){
-        observer = o;
-    }
-    
+   
     /** 
      * Dummy implementation of docking point functionality on key insertion.
      * 
@@ -72,10 +67,17 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         okLight.flash();       
     }
     
+    private DPointObserver observer;
+    
+    public void setObserver(DPointObserver o){
+        observer = o;
+    }
+    
     @Override
     public void bikeDocked(String bikeId) {
         // TODO Auto-generated method stub
         //decide which functions to call
+        logger.fine(getInstanceName());
         observer.disassociateBikeFromUser(bikeId);
     }
     
