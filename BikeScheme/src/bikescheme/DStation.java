@@ -62,7 +62,7 @@ public class DStation implements StartRegObserver, DPointObserver {
         for (int i = 1; i <= numPoints; i++) {
             DPoint dp = new DPoint(instanceName + "." + i, i - 1);
             dockingPoints.add(dp);
-            dp.setObserver(this); 
+            dp.setDPointObserver(this); 
         }
     }
        
@@ -123,8 +123,8 @@ public class DStation implements StartRegObserver, DPointObserver {
     public void addUserObserver(AddUserObserver o){
         addUserObserver = o;
     }
-    
-    private ActionsForBikeAndUserObserver  removeBikeObserver;
+    //Bike-User actions observers:-----------------------------------------------------------
+    private ActionsForBikeAndUserObserver  removeBikeObserver ;
     
     public void setRemoveBikeObserver(ActionsForBikeAndUserObserver o){
         removeBikeObserver = o;

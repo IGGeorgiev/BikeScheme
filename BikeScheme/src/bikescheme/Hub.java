@@ -97,6 +97,7 @@ public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver, 
 
 		DStation newDStation = new DStation(instanceName, eastPos, northPos,numPoints);
 		dockingStationMap.put(instanceName, newDStation);
+		newDStation.setRemoveBikeObserver(this);//TODO
 
 		// Now connect up DStation to event distributor and collector.
 
@@ -111,17 +112,27 @@ public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver, 
 		return dockingStationMap.get(instanceName);
 	}
 	
-
-    @Override
-    public void removeBikeFromUser(String bikeId) {
-        // TODO Auto-generated method stub
-        
-    }
     
     public void addUser(String keyId, String personalDetails, String cardDetails){
         logger.fine("Recording user in " + HUBNAME);
         User user = new User(keyId,personalDetails,cardDetails);
         users.add(user);
+    }
+    private Bike findBikebyId(String bikeId){
+        for(Bike bike : bikes){
+            if(bike.getId().equals(bikeId))return bike;
+        }
+        return null;
+    }
+    @Override
+    public void returnBike(String bikeId) {
+        Bike bike = findBikebyId(bikeId);
+        if(inUse.get(bike)==null){
+            logger.fine(HUBNAME+": bike added by Staff.");
+        }else{
+            logger.fine(HUBNAME+": bike returned by Customer.");
+            inUse.remove(bike);
+        }
     }
 	
 }
