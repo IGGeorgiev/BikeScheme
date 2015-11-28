@@ -20,9 +20,9 @@ import java.util.logging.Logger;
 public class Hub implements AddDStationObserver, RemoveBikeFromUser {
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	//String is the unique key in users
-	private Map<String,User> users;
-	private List<Bike> bikes;
-	private Map<String,Bike> associations; 
+	private List<Bike> bikes;      //List of all bikes
+	private List<User> users;      //List of all users
+	private Map<User,Bike> inUse;  //List of all users currently using bikes
 	private HubTerminal terminal;
 	private HubDisplay display;
 	private Map<String, DStation> dockingStationMap;
@@ -43,7 +43,9 @@ public class Hub implements AddDStationObserver, RemoveBikeFromUser {
 		terminal.setObserver(this);
 		display = new HubDisplay("hd");
 		dockingStationMap = new HashMap<String, DStation>();
+		
 		Clock.createInstance();
+		
 		// Schedule timed notification for generating updates of
 		// hub display.
 
@@ -115,6 +117,7 @@ public class Hub implements AddDStationObserver, RemoveBikeFromUser {
         // TODO When Ivan finishes User classes and 
         
     }
-
+    
+    
 	
 }

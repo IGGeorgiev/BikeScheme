@@ -78,9 +78,5 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         //decide which functions to call
         observer.disassociateBikeFromUser(bikeId);
     }
-    
-    
-    
  
-
 }
