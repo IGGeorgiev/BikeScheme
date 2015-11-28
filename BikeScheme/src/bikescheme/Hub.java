@@ -19,10 +19,11 @@ import java.util.logging.Logger;
  */
 public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
+	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
 	private List<Bike> bikes;
 	private List<User> users;
-	private Map<User,Bike> inUse; 
+	private Map<Bike,User> inUse; 
 	private HubTerminal terminal;
 	private HubDisplay display;
 	private Map<String, DStation> dockingStationMap;
@@ -112,9 +113,14 @@ public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver {
 	
 
     @Override
-    public void removeBikeFromUser(String bikeId) {
+    public void returnBike(String bikeId) {
         // TODO Auto-generated method stub
-        
+        if(inUse.get(bikeId)==null){//if the bike is not in the inUse map, then it is staff allocating a bike
+            logger.fine(HUBNAME+"bike allocated by Staff");
+        }else{//if the bike is in the inUse map, then disassociate it from the map
+            logger.fine(HUBNAME+"bike returned by customer");
+            inUse.remove(bikeId);
+        }
     }
     
 

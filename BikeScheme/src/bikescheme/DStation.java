@@ -124,7 +124,7 @@ public class DStation implements StartRegObserver, DPointObserver {
     public void disassociateBikeFromUser(String bikeId) {
         // TODO Auto-generated method stub
         logger.fine(getInstanceName());
-        removeBikeObserver.removeBikeFromUser(bikeId);
+        removeBikeObserver.returnBike(bikeId);
     }
  
 

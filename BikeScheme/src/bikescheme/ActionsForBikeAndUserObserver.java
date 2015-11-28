@@ -7,5 +7,5 @@ package bikescheme;
  *
  */
 public interface ActionsForBikeAndUserObserver {
-    public void removeBikeFromUser(String bikeId);
+    public void returnBike(String bikeId);
 }
