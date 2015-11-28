@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class Hub implements AddDStationObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
-
+	
 	private HubTerminal terminal;
 	private HubDisplay display;
 	private Map<String, DStation> dockingStationMap;
@@ -35,7 +35,6 @@ public class Hub implements AddDStationObserver {
 	 * @param instanceName
 	 */
 	public Hub() {
-	    //vanka vij me
 		// Construct and make connections with interface devices
 		terminal = new HubTerminal("ht");
 		terminal.setObserver(this);

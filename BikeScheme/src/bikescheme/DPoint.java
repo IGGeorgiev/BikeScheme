@@ -12,9 +12,9 @@ import java.util.logging.Logger;
  * @author pbj
  *
  */
-public class DPoint implements KeyInsertionObserver {
+public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     public static final Logger logger = Logger.getLogger("bikescheme");
-
+    
     private KeyReader keyReader; 
     private OKLight okLight;
     private String instanceName;
@@ -65,6 +65,12 @@ public class DPoint implements KeyInsertionObserver {
         logger.fine(getInstanceName());
         
         okLight.flash();       
+    }
+
+    @Override
+    public void bikeDocked(String bikeId) {
+        // TODO Auto-generated method stub
+        
     }
     
  
