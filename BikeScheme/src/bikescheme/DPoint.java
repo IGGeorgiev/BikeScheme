@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     public static final Logger logger = Logger.getLogger("bikescheme");
-    
+    private String bikeId;
     private BikeSensor bikeSensor;
     private BikeLock bikeLock;
     private KeyReader keyReader; 
@@ -40,6 +40,7 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         bikeLock = new BikeLock(instanceName+ ".bl");
         bikeSensor = new BikeSensor(instanceName+ ".bs");
         bikeSensor.setBikeDockingObserver(this);
+        bikeId = null;
         this.instanceName = instanceName;
         this.index = index;
     }
@@ -59,19 +60,26 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     public int getIndex() {
         return index;
     }
-    
-   
+   //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========
+   private DPointObserver keyInserted;
+   public void setKeyInsertedObserver(DPointObserver o){
+       keyInserted = o;
+   }
     /** 
-     * Dummy implementation of docking point functionality on key insertion.
-     * 
-     * Here, just flash the OK light.
+     * Implementation of the key insertion at a DPoint:
+     * Associate User with the Bike.
+     * Unlock the bike.
+     * Flash the OK light.
+     *
      */
     public void keyInserted(String keyId) {
         logger.fine(getInstanceName());
         
+        keyInserted.associateBikeToUser(keyId, this.bikeId);
+        bikeLock.unlock();
         okLight.flash();       
     }
-    
+    //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
     private DPointObserver dPointObserver;
     
     public void setDPointObserver(DPointObserver o){
@@ -81,10 +89,11 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     @Override
     public void bikeDocked(String bikeId) {
         // TODO Auto-generated method stub
-        //decide which functions to call
         logger.fine(getInstanceName());
         dPointObserver.disassociateBikeFromUser(bikeId);
         bikeLock.lock();
+        this.bikeId = bikeId;
+        okLight.flash();
     }
  
 }

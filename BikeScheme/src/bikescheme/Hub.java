@@ -17,7 +17,10 @@ import java.util.logging.Logger;
  * @author pbj
  * 
  */
-public class Hub implements AddDStationObserver,ActionsForBikeAndUserObserver, AddUserObserver, ViewActivityDStationObserver {
+public class Hub implements AddDStationObserver,
+					ActionsForBikeAndUserObserver,
+					AddUserObserver,
+					ViewActivityDStationObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
