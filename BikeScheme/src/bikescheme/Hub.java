@@ -20,9 +20,9 @@ import java.util.logging.Logger;
 public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	//String is the unique key in users
-	private List<User> users;
 	private List<Bike> bikes;
-	private Map<User,Bike> associations; 
+	private List<User> users;
+	private Map<User,Bike> inUse; 
 	private HubTerminal terminal;
 	private HubDisplay display;
 	private Map<String, DStation> dockingStationMap;
