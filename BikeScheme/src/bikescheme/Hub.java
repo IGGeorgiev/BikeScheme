@@ -17,13 +17,15 @@ import java.util.logging.Logger;
  * @author pbj
  * 
  */
-public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver, AddUserObserver {
+public class Hub implements AddDStationObserver, 
+                    ActionsForBikeAndUserObserver, 
+                    AddUserObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
 	private List<Bike> bikes;
 	private List<User> users;
-	private Map<User,Bike> inUse; 
+	private Map<Bike,User> inUse; 
 	private HubTerminal terminal;
 	private HubDisplay display;
 	private Map<String, DStation> dockingStationMap;
@@ -118,12 +120,7 @@ public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver, 
         User user = new User(keyId,personalDetails,cardDetails);
         users.add(user);
     }
-    private Bike findBikebyId(String bikeId){
-        for(Bike bike : bikes){
-            if(bike.getId().equals(bikeId))return bike;
-        }
-        return null;
-    }
+    //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
     @Override
     public void returnBike(String bikeId) {
         Bike bike = findBikebyId(bikeId);
@@ -132,7 +129,41 @@ public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver, 
         }else{
             logger.fine(HUBNAME+": bike returned by Customer.");
             inUse.remove(bike);
-        }
+                    }
     }
-	
+    //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========   
+    @Override
+    public void addBike(String bikeId, String keyId) {
+        // TODO add implementation of denying to lend bike
+        Bike bike = findBikebyId(bikeId);
+        User user = findUserbyKeyId(bikeId);
+        inUse.put(bike,user);
+    }
+    //=======================HELPER FUNCTIONS ==============================
+    /**
+     * Given a unique bike ID, returns the bike it's
+     * associated with or null if bike with such ID
+     * doesn't exist
+     *   
+     * @return Bike
+     */
+    public Bike findBikebyId(String bikeId){
+        for(Bike bike : bikes){
+            if(bike.getId().equals(bikeId))return bike;
+        }
+        return null;
+    }
+    /**
+     * Given a unique user ID, returns the user it's
+     * associated with or null if user with such ID
+     * doesn't exist
+     *  
+     * @return User
+     */
+    public User findUserbyKeyId(String keyId){
+        for(User usr : users){
+            if(usr.getKeyId().equals(keyId))return usr;
+        }
+        return null;
+    }
 }
