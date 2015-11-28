@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * @author pbj
  *
  */
-public class DStation implements StartRegObserver {
+public class DStation implements StartRegObserver, DPointObserver {
     public static final Logger logger = Logger.getLogger("bikescheme");
 
     private String instanceName;
@@ -61,6 +61,7 @@ public class DStation implements StartRegObserver {
         for (int i = 1; i <= numPoints; i++) {
             DPoint dp = new DPoint(instanceName + "." + i, i - 1);
             dockingPoints.add(dp);
+            dp.setObserver(this); 
         }
     }
        
@@ -112,6 +113,12 @@ public class DStation implements StartRegObserver {
     
     public int getNorthPos() {
         return northPos;
+    }
+
+    @Override
+    public void disassociateBikeFromUser(String bikeId) {
+        // TODO Auto-generated method stub
+        
     }
  
 

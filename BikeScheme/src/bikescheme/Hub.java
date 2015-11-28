@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  * @author pbj
  * 
  */
-public class Hub implements AddDStationObserver {
+public class Hub implements AddDStationObserver, RemoveBikeFromUser {
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	//String is the unique key in users
 	private Map<String,User> users;
@@ -109,6 +109,12 @@ public class Hub implements AddDStationObserver {
 	public DStation getDStation(String instanceName) {
 		return dockingStationMap.get(instanceName);
 	}
+
+    @Override
+    public void removeBikeFromUser(String bikeId) {
+        // TODO When Ivan finishes User classes and 
+        
+    }
 
 	
 }
