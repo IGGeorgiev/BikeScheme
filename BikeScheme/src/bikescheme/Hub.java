@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class Hub implements AddDStationObserver, ActionsForBikeAndUserObserver, AddUserObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
-	
+	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
 	private List<Bike> bikes;
 	private List<User> users;
