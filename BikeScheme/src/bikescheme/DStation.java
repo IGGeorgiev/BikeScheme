@@ -126,22 +126,9 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     public void setAddUserObserver(AddUserObserver o){
         addUserObserver = o;
     }
-<<<<<<< HEAD
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
     private ActionsForBikeAndUserObserver removeBikeObserver ;
-    //
-=======
-<<<<<<< HEAD
-    
-    //Bike-User actions observers:-----------------------------------------------------------
-    private ActionsForBikeAndUserObserver  removeBikeObserver ;
-    
-=======
-    //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
-    private ActionsForBikeAndUserObserver removeBikeObserver ;
-    //
->>>>>>> refs/remotes/origin/master
->>>>>>> refs/remotes/origin/master
+
     public void setRemoveBikeObserver(ActionsForBikeAndUserObserver o){
         removeBikeObserver = o;
     }
@@ -165,6 +152,12 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     public void associateBikeToUser(String bikeId, String keyId) {
         logger.fine(getInstanceName());
         addBikeObserver.addBike(bikeId, keyId);
+    }
+
+    @Override
+    public void viewActivityReceived() {
+        // TODO Auto-generated method stub
+        
     }
  
 

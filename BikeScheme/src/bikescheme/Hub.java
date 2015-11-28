@@ -17,16 +17,11 @@ import java.util.logging.Logger;
  * @author pbj
  * 
  */
-<<<<<<< HEAD
-public class Hub implements AddDStationObserver, 
-                    ActionsForBikeAndUserObserver, 
-                    AddUserObserver {
-=======
+
 public class Hub implements AddDStationObserver,
 					ActionsForBikeAndUserObserver,
 					AddUserObserver,
 					ViewActivityDStationObserver {
->>>>>>> refs/remotes/origin/master
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
@@ -129,18 +124,8 @@ public class Hub implements AddDStationObserver,
         User user = new User(keyId,personalDetails,cardDetails);
         users.add(user);
     }
-<<<<<<< HEAD
-    //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
-=======
+    //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========    
     
-    private Bike findBikebyId(String bikeId){
-        for(Bike bike : bikes){
-            if(bike.getId().equals(bikeId))return bike;
-        }
-        return null;
-    }
-    
->>>>>>> refs/remotes/origin/master
     @Override
     public void returnBike(String bikeId) {
         Bike bike = findBikebyId(bikeId);
@@ -186,4 +171,11 @@ public class Hub implements AddDStationObserver,
         }
         return null;
     }
+
+    @Override
+    public void viewActivityReply() {
+        // TODO Auto-generated method stub
+        
+    }
 }
+
