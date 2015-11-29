@@ -97,13 +97,11 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     public void startRegReceived(String personalInfo) {
         logger.fine("Starting on instance " + getInstanceName());
         
-        cardReader.requestCard();  // Generate output event
-        logger.fine("Card requested at " + getInstanceName());
-        
-        String cardDetails = cardReader.checkCard();    // Pull in non-triggering input event
+        String cardDetails = cardReader.readCard();    
         logger.fine("Card read at " + getInstanceName());
         
         String keyId = keyIssuer.issueKey(); // Generate output event
+        logger.fine("Key " + keyId + " issued");
         
         addUserObserver.addUser(keyId, personalInfo, cardDetails);
     }
