@@ -77,6 +77,7 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         
         keyInserted.associateBikeToUser(keyId, this.bikeId);
         bikeLock.unlock();
+        bikeId = null;
         okLight.flash();       
     }
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
