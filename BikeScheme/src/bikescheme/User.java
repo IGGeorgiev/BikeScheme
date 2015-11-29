@@ -64,4 +64,7 @@ public class User {
         return trips;
     }
     
+    public void clearTrips(){
+        trips.clear();
+    }
 }

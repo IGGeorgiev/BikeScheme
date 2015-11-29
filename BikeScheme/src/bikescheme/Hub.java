@@ -23,6 +23,7 @@ public class Hub implements AddDStationObserver,
 					ActionsForBikeAndUserObserver,
 					AddUserObserver,
 					ViewActivityObserver {
+    
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
@@ -49,13 +50,15 @@ public class Hub implements AddDStationObserver,
 		terminal.setObserver(this);
 		display = new HubDisplay("hd");
 		dockingStationMap = new HashMap<String, DStation>();
-		Clock.createInstance();
+		
 		// Schedule timed notification for generating updates of
 		// hub display.
 
 		// The idiom of an anonymous class is used here, to make it easy
 		// for hub code to process multiple timed notification, if needed.
 
+
+        Clock.createInstance();
 		Clock.getInstance().scheduleNotification(
 				new TimedNotificationObserver() {
 
@@ -77,7 +80,29 @@ public class Hub implements AddDStationObserver,
 					}
 
 				}, Clock.getStartDate(), 0, 5);
-
+		
+		/**
+		 * Notification to clear the User's recent trips and possibly
+		 * apply charges to their bank account based on time hired.
+		 * THE LATTER IS NOT IMPLEMENTED
+		 * 
+		 * @author iggeorgiev
+		 */
+		Clock.getInstance().scheduleNotification(
+		        new TimedNotificationObserver() {
+		            
+		            public void processTimedNotification(){
+		                logger.fine("");
+		                
+		                for (User u : users){
+		                    
+		                    // User billing should be done here
+		                    
+		                    u.clearTrips();
+		                }
+		            }
+		            
+		        }, Clock.getStartDate(), 24, 0);
 	}
 
 	public void setDistributor(EventDistributor d) {
