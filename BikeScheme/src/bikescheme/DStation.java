@@ -145,10 +145,6 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         //TODO add code for occupancy checking here
     }
     
-    public void viewActivityRecieved(){
-        //TODO
-    }
-    
     //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========
     private ActionsForBikeAndUserObserver addBikeObserver;
     public void setAddBikeObserver(ActionsForBikeAndUserObserver o){
