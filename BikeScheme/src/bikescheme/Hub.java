@@ -60,16 +60,17 @@ public class Hub implements AddDStationObserver,
 				new TimedNotificationObserver() {
 
 					/**
-					 * Generate dummy display of station occupancy data.
+					 * Generate display of station occupancy data.
 					 */
 					@Override
 					public void processTimedNotification() {
 						logger.fine("");
-
-						String[] occupancyArray =
+						/*String[] occupancyArray =
 						// "DSName","East","North","Status","#Occupied","#DPoints"
 						{ "A", "100", "200", "HIGH", "19", "20", "B", "300",
 								"-500", "LOW", "1", "50" };
+								*/
+						String[] occupancyArray = populateOccupancyArray();
 
 						List<String> occupancyData = Arrays.asList(occupancyArray);
 						display.showOccupancy(occupancyData);
@@ -129,13 +130,12 @@ public class Hub implements AddDStationObserver,
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========    
     
     @Override
-    public void returnBike(String bikeId, String endPoint) {//TODO Needs to pass arguments to User Class in 
-        Bike bike = findBikeById(bikeId);  //the form of endUsage(Date endDate, String endDStation)
+    public void returnBike(String bikeId, String endPoint) {
+        Bike bike = findBikeById(bikeId); 
         if(inUse.get(bike)==null){
             logger.fine(HUBNAME+": bike added by Staff.");
         }else{
             logger.fine(HUBNAME+": bike returned by Customer.");
-            //TODO add code here
             User user = findUserByBikeId(bikeId);
             user.endUsage(Clock.getInstance().getDateAndTime(), endPoint);
             inUse.remove(bike);
@@ -150,6 +150,33 @@ public class Hub implements AddDStationObserver,
         inUse.put(bike,user);
         user.startUsage(Clock.getInstance().getDateAndTime(), startPoint);
     }
+    //=========CODE FOR HANDLING VIEW ACTIVITY USE-CASE=========   
+    /**
+     * 
+     * Returns a list of Strings depicting user activity
+     * all the way back to the DSTouchScreen through
+     * DStation.
+     * 
+     * @return List<String>
+     * 
+     */
+    @Override
+    public List<String> viewActivityReceived(String keyId) {
+        logger.fine("Currently at " + HUBNAME);
+        
+        User usr = findUserByKeyId(keyId);
+        List<String> viewActivity = new ArrayList<String>();
+        
+        logger.fine("Fetching Trip Information at " + HUBNAME);
+        for(Trip tr : usr.getTrips()){
+            viewActivity.add(tr.getDuration());
+            viewActivity.add(tr.getStartStation());
+            viewActivity.add(tr.getEndStation());
+            viewActivity.add(tr.getStartTime());
+        }
+        return viewActivity;
+    }
+    
     //=======================HELPER FUNCTIONS ==============================
     /**
      * Given a unique bike ID, returns the bike it's
@@ -190,30 +217,54 @@ public class Hub implements AddDStationObserver,
         User user = inUse.get(bike);    
         return user;
     }
+    
     /**
+     * Populates an array of all DStations in the database in the form:
+     * "DSName","East","North","Status","#Occupied","#DPoints"
      * 
-     * Returns a list of Strings depicting user activity
-     * all the way back to the DSTouchScreen through
-     * DStation.
-     * 
-     * @return List<String>
-     * 
+     * @return
      */
-    @Override
-    public List<String> viewActivityReceived(String keyId) {
-        logger.fine("Currently at " + HUBNAME);
-        
-        User usr = findUserByKeyId(keyId);
-        List<String> viewActivity = new ArrayList<String>();
-        
-        logger.fine("Fetching Trip Information at " + HUBNAME);
-        for(Trip tr : usr.getTrips()){
-            viewActivity.add(tr.getDuration());
-            viewActivity.add(tr.getStartStation());
-            viewActivity.add(tr.getEndStation());
-            viewActivity.add(tr.getStartTime());
+    
+    public String[] populateOccupancyArray(){
+      //FIRST PRINT HIGH AND LOW OCCUPIED DSTATIONS
+        String[] occupancyArray = new String[dockingStationMap.size()*6];
+        int i = 0;
+        for(String s : dockingStationMap.keySet()){
+            DStation dStation = dockingStationMap.get(s);
+            double occupancyRatio =(double) dStation.getFreePoints()/
+                                            dStation.getNumberOfPoints();
+            if(occupancyRatio >= 0.85 || occupancyRatio <= 0.15){
+                occupancyArray[i]=dStation.getInstanceName();
+                occupancyArray[i+1]=String.format("%d", dStation.getEastPos());
+                occupancyArray[i+2]=String.format("%d", dStation.getNorthPos());
+                occupancyArray[i+3]=dStation.getStatus();
+                occupancyArray[i+4]=String.format("%d", dStation.getNumberOfPoints()-
+                                                        dStation.getFreePoints());
+                occupancyArray[i+5]=String.format("%d", dStation.getNumberOfPoints());
+                i+=6;
+            }
         }
-        return viewActivity;
+        //NOW PRINT THE OTHER DSTATIONS
+        for(String s : dockingStationMap.keySet()){
+            DStation dStation = dockingStationMap.get(s);
+            double occupancyRatio =(double) dStation.getFreePoints()/
+                                            dStation.getNumberOfPoints();
+            if(occupancyRatio < 0.85 && occupancyRatio > 0.15){
+                occupancyArray[i]=dStation.getInstanceName();
+                occupancyArray[i+1]=String.format("%d", dStation.getEastPos());
+                occupancyArray[i+2]=String.format("%d", dStation.getNorthPos());
+                occupancyArray[i+3]=dStation.getStatus();
+                occupancyArray[i+4]=String.format("%d", dStation.getNumberOfPoints()-
+                                                        dStation.getFreePoints());
+                occupancyArray[i+5]=String.format("%d", dStation.getNumberOfPoints());
+                i+=6;
+            }
+        }
+        //FINALLY RETURN THE POPULATED ARRAY
+        return occupancyArray;
     }
+    
+    
+ 
 }
 

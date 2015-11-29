@@ -20,7 +20,6 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     private String instanceName;
     private int eastPos;
     private int northPos;
-    private int numberOfPoints;
     private int freePoints;
     
     private DSTouchScreen touchScreen;
@@ -59,9 +58,7 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         cardReader = new CardReader(instanceName + ".cr");
         
         keyIssuer = new KeyIssuer(instanceName + ".ki");
-        
-        numberOfPoints = numPoints;
-        
+                
         freePoints = numPoints;
         
         dockingPoints = new ArrayList<DPoint>();
@@ -122,7 +119,22 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     public int getNorthPos() {
         return northPos;
     }
-  
+    
+    public int getNumberOfPoints(){
+        return dockingPoints.size();
+    }
+    
+    public int getFreePoints(){
+        return freePoints;
+    }
+    
+    public String getStatus(){
+        double occupancyRatio = (double)getNumberOfPoints()/getFreePoints();
+        if     (occupancyRatio>=0.85){return "HIGH";}
+        else if(occupancyRatio<=0.15){return "LOW";}
+        else{return "OK";}
+        
+    }
     //======================HANDLES ADD USER REQUESTS=========================
     
     private AddUserObserver addUserObserver;
@@ -143,10 +155,6 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         removeBikeObserver.returnBike(bikeId, this.getInstanceName());
         freePoints--;
         //TODO add code for occupancy checking here
-    }
-    
-    public void viewActivityRecieved(){
-        //TODO
     }
     
     //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========
