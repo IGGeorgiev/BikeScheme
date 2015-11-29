@@ -27,9 +27,9 @@ public class Hub implements AddDStationObserver,
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
-	private List<Bike> bikes;
-	private List<User> users;
-	private Map<Bike,User> inUse; 
+	private List<Bike> bikes ;
+	private List<User> users ;
+	private Map<Bike,User> inUse ; 
 	private HubTerminal terminal;
 	private HubDisplay display;
 	private Map<String, DStation> dockingStationMap;
@@ -50,7 +50,9 @@ public class Hub implements AddDStationObserver,
 		terminal.setObserver(this);
 		display = new HubDisplay("hd");
 		dockingStationMap = new HashMap<String, DStation>();
-		
+		bikes = new ArrayList<Bike>();
+	    users = new ArrayList<User>();;
+	    inUse = new HashMap<Bike,User>(); 		
 		// Schedule timed notification for generating updates of
 		// hub display.
 
@@ -157,7 +159,7 @@ public class Hub implements AddDStationObserver,
 	//====================ADDS USER TO USER LIST==============================
 	
     public void addUser(String keyId, String personalDetails, String cardDetails){
-        logger.fine("Recording user in " + HUBNAME);
+        logger.fine("Recording user : "+personalDetails+" with key : "+keyId+" in " + HUBNAME);
         User user = new User(keyId,personalDetails,cardDetails);
         users.add(user);
     }
@@ -177,12 +179,13 @@ public class Hub implements AddDStationObserver,
     }
     //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========   
     @Override
-    public void addBike(String bikeId, String keyId, String startPoint) {
-        // TODO add implementation of denying to lend bike
+    public void addBike(String bikeId, String keyId, String startPoint) {        
         Bike bike = findBikeById(bikeId);
         User user = findUserByKeyId(bikeId);
-        inUse.put(bike,user);
-        user.startUsage(Clock.getInstance().getDateAndTime(), startPoint);
+        if(user!=null){
+            inUse.put(bike,user);
+            user.startUsage(Clock.getInstance().getDateAndTime(), startPoint);
+        }
     }
     //=========CODE FOR HANDLING VIEW ACTIVITY USE-CASE=========   
     /**

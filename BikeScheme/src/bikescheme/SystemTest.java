@@ -126,7 +126,8 @@ public class SystemTest {
         logger.info("Starting test: testKeyReaderAndOKLight");
         
         setupDemoSystemConfig();
-        
+        input ("2 09:00, DPoint,    B.2.bs, dockBike, bike-1");//TODO
+        expect("2 09:00, OKLight,   B.2.ok, flashed");
         input ("2 09:30, KeyReader, B.2.kr, insertKey, key-2");
         expect("2 09:30, OKLight,   B.2.ok, flashed");
     }
