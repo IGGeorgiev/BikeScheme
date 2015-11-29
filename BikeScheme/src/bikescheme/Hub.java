@@ -97,6 +97,16 @@ public class Hub implements AddDStationObserver,
 		                for (User u : users){
 		                    
 		                    // User billing should be done here
+
+                            int charge = 0;
+		                    
+		                    for(Trip tr : u.getTrips()){
+		                        
+		                        //Calculates each user's applied charges
+		                        charge += tr.getPrice();
+		                    }
+		                    
+		                    applyCharges(charge, u.getPersonalDetails(), u.getCardDetails());
 		                    
 		                    u.clearTrips();
 		                }
@@ -289,7 +299,10 @@ public class Hub implements AddDStationObserver,
         return occupancyArray;
     }
     
+    //======================POSSIBLE CONNECTION TO BANKING SERVER======================
     
- 
+    public void applyCharges(int charge, String personalDetails, String cardAuthenticationNumber){
+        //Applies charges to the given card authentication number relative to the user's personal details
+    }
 }
 

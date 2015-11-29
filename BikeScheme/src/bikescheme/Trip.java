@@ -28,8 +28,8 @@ public class Trip {
         else this.price = 1 + (duration % 30)*2;
     }
     
-    public String getPrice(){
-        return Integer.toString(price);
+    public int getPrice(){
+        return price;
     }
     
     public String getStartTime(){
