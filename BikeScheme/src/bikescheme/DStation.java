@@ -20,6 +20,8 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     private String instanceName;
     private int eastPos;
     private int northPos;
+    private int numberOfPoints;
+    private int freePoints;
     
     private DSTouchScreen touchScreen;
     private CardReader cardReader; 
@@ -57,6 +59,10 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         cardReader = new CardReader(instanceName + ".cr");
         
         keyIssuer = new KeyIssuer(instanceName + ".ki");
+        
+        numberOfPoints = numPoints;
+        
+        freePoints = numPoints;
         
         dockingPoints = new ArrayList<DPoint>();
         
@@ -131,15 +137,18 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         removeBikeObserver = o;
     }
     
+    @Override
+    public void disassociateBikeFromUser(String bikeId) {
+        logger.fine(getInstanceName());
+        removeBikeObserver.returnBike(bikeId, this.getInstanceName());
+        freePoints--;
+        //TODO add code for occupancy checking here
+    }
+    
     public void viewActivityRecieved(){
         //TODO
     }
     
-    @Override
-    public void disassociateBikeFromUser(String bikeId) {
-        logger.fine(getInstanceName());
-        removeBikeObserver.returnBike(bikeId);
-    }
     //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========
     private ActionsForBikeAndUserObserver addBikeObserver;
     public void setAddBikeObserver(ActionsForBikeAndUserObserver o){
@@ -149,7 +158,8 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     @Override
     public void associateBikeToUser(String bikeId, String keyId) {
         logger.fine(getInstanceName());
-        addBikeObserver.addBike(bikeId, keyId);
+        addBikeObserver.addBike(bikeId, keyId, this.getInstanceName());
+        freePoints++;
     }
     
     //==========CODE FOR HANDLING VIEW ACTIVITY USE CASE=========

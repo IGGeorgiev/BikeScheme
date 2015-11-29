@@ -37,8 +37,8 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         keyReader = new KeyReader(instanceName + ".kr");
         keyReader.setObserver(this);
         okLight = new OKLight(instanceName + ".ok");
-        bikeLock = new BikeLock(instanceName+ ".bl");
-        bikeSensor = new BikeSensor(instanceName+ ".bs");
+        bikeLock = new BikeLock(instanceName+"."+index+".bl");
+        bikeSensor = new BikeSensor(instanceName+"."+index+ ".bs");
         bikeSensor.setBikeDockingObserver(this);
         bikeId = null;
         this.instanceName = instanceName;

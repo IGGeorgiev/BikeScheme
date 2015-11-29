@@ -1,5 +1,6 @@
 package bikescheme;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class User {
         this.setKeyId(keyId);
         this.setCardDetails(cardDetails);
         this.setPersonalDetails(personalDetails);
+        this.startDate = null;
+        this.startPoint = null;
+        this.trips = new ArrayList<Trip>();
     }
 
     public String getCardDetails() {
