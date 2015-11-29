@@ -115,7 +115,7 @@ public class SystemTest {
              + "     A,  100,   200,   HIGH,        19,       20," 
              + "     B,  300,  -500,    LOW,         1,       50");
     }
-    
+        
     /**
      * Run a test to demonstrate basic docking point interface
      * functionality.
