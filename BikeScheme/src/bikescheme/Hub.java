@@ -256,7 +256,7 @@ public class Hub implements AddDStationObserver,
      * Populates a List of all DStations in the database in the form:
      * "DSName","East","North","Status","#Occupied","#DPoints"
      * 
-     * @return
+     * @return List<String>
      */
     
     public List<String> populateFullOccupancyList(){

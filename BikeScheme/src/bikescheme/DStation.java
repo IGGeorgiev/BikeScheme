@@ -129,7 +129,7 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     }
     
     public String getStatus(){
-        double occupancyRatio = (double)getNumberOfPoints()/getFreePoints();
+        double occupancyRatio = (double)getFreePoints()/getNumberOfPoints();
         if     (occupancyRatio>=0.85){return "HIGH";}
         else if(occupancyRatio<=0.15){return "LOW";}
         else{return "OK";}
