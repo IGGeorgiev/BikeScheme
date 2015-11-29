@@ -182,10 +182,10 @@ public class Hub implements AddDStationObserver,
     public void addBike(String bikeId, String keyId, String startPoint) {        
         Bike bike = findBikeById(bikeId);
         User user = findUserByKeyId(bikeId);
-        if(user!=null){
+        //if(user!=null){
             inUse.put(bike,user);
             user.startUsage(Clock.getInstance().getDateAndTime(), startPoint);
-        }
+        //}
     }
     //=========CODE FOR HANDLING VIEW ACTIVITY USE-CASE=========   
     /**

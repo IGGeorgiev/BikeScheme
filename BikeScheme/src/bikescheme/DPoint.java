@@ -47,10 +47,12 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     
     public void setDistributor(EventDistributor d) {
         keyReader.addDistributorLinks(d); 
+        bikeSensor.addDistributorLinks(d);
     }
     
     public void setCollector(EventCollector c) {
         okLight.setCollector(c);
+        bikeLock.setCollector(c);
         
     }
     
