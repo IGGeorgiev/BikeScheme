@@ -69,7 +69,7 @@ public class DSTouchScreen extends AbstractIODevice {
      * Model user starting a user registration operation and entering their
      * personal details.  Pass details on to the registered observer.
      * 
-     * @param keyId
+     * @param personalDetails
      */
     public void startReg(String personalDetails) {
         logger.fine(getInstanceName());
@@ -153,7 +153,7 @@ public class DSTouchScreen extends AbstractIODevice {
         List<String> messageArgs = new ArrayList<String>();
         String[] preludeArgs = 
             {"ordered-tuples","4",
-             "HireTime (min)","HireDS","ReturnDS","Price"}; //Changed tuples from Hire Time HireDS ReturnDS Duration (min)
+             "HireTime","HireDS","ReturnDS","Duration (min)"}; //Changed tuples from Hire Time HireDS ReturnDS Duration (min)
         messageArgs.addAll(Arrays.asList(preludeArgs));
         messageArgs.addAll(activityData);
         

@@ -85,8 +85,6 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     }
     
     /** 
-     * Dummy implementation of docking station functionality for 
-     * "register user" use case.
      * 
      * Method called on docking station receiving a "start registration"
      * triggering input event at the touch screen.

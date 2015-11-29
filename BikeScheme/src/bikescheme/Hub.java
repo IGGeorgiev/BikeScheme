@@ -195,7 +195,7 @@ public class Hub implements AddDStationObserver,
             viewActivity.add(tr.getDuration());
             viewActivity.add(tr.getStartStation());
             viewActivity.add(tr.getEndStation());
-            viewActivity.add(tr.getPrice());
+            viewActivity.add(tr.getStartTime());
         }
         return viewActivity;
     }

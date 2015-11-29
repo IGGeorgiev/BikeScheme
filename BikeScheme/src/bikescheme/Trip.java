@@ -21,8 +21,10 @@ public class Trip {
     private int price;
     private String startStation;
     private String endStation;
+    private String startTime;
     
     public Trip(Date startDate, Date endDate){
+        this.startTime = startDate.toString();
         this.duration = Clock.minutesBetween(startDate, endDate);
         if (duration % 30 == 0) this.price = 1;
         else this.price = 1 + (duration % 30)*2;
@@ -30,6 +32,10 @@ public class Trip {
     
     public String getPrice(){
         return Integer.toString(price);
+    }
+    
+    public String getStartTime(){
+        return startTime;
     }
     
     public String getDuration(){
