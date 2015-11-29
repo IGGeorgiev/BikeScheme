@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 
 /**
  * 
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
 public class Hub implements AddDStationObserver,
 					ActionsForBikeAndUserObserver,
 					AddUserObserver,
-					ViewActivityDStationObserver {
+					ViewActivityObserver {
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
 	//String is the unique key in users
@@ -103,6 +104,7 @@ public class Hub implements AddDStationObserver,
 		dockingStationMap.put(instanceName, newDStation);
 		newDStation.setRemoveBikeObserver(this);
 		newDStation.setAddUserObserver(this);
+		newDStation.setViewActivityObserver(this);
 
 		// Now connect up DStation to event distributor and collector.
 
@@ -127,8 +129,8 @@ public class Hub implements AddDStationObserver,
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========    
     
     @Override
-    public void returnBike(String bikeId) {
-        Bike bike = findBikebyId(bikeId);
+    public void returnBike(String bikeId) {         //TODO Needs to pass arguments to User Class in the form of endUsage(Date endDate, String endDStation)
+        Bike bike = findBikeById(bikeId);
         if(inUse.get(bike)==null){
             logger.fine(HUBNAME+": bike added by Staff.");
         }else{
@@ -140,8 +142,8 @@ public class Hub implements AddDStationObserver,
     @Override
     public void addBike(String bikeId, String keyId) {
         // TODO add implementation of denying to lend bike
-        Bike bike = findBikebyId(bikeId);
-        User user = findUserbyKeyId(bikeId);
+        Bike bike = findBikeById(bikeId);
+        User user = findUserByKeyId(bikeId);
         inUse.put(bike,user);
     }
     //=======================HELPER FUNCTIONS ==============================
@@ -152,7 +154,7 @@ public class Hub implements AddDStationObserver,
      *   
      * @return Bike
      */
-    public Bike findBikebyId(String bikeId){
+    public Bike findBikeById(String bikeId){
         for(Bike bike : bikes){
             if(bike.getId().equals(bikeId))return bike;
         }
@@ -165,17 +167,37 @@ public class Hub implements AddDStationObserver,
      *  
      * @return User
      */
-    public User findUserbyKeyId(String keyId){
+    public User findUserByKeyId(String keyId){
         for(User usr : users){
             if(usr.getKeyId().equals(keyId))return usr;
         }
         return null;
     }
 
+    /**
+     * 
+     * Returns a list of Strings depicting user activity
+     * all the way back to the DSTouchScreen through
+     * DStation.
+     * 
+     * @return List<String>
+     * 
+     */
     @Override
-    public void viewActivityReply() {
-        // TODO Auto-generated method stub
+    public List<String> viewActivityReceived(String keyId) {
+        logger.fine("Currently at " + HUBNAME);
         
+        User usr = findUserByKeyId(keyId);
+        List<String> viewActivity = new ArrayList<String>();
+        
+        logger.fine("Fetching Trip Information at " + HUBNAME);
+        for(Trip tr : usr.getTrips()){
+            viewActivity.add(tr.getDuration());
+            viewActivity.add(tr.getStartStation());
+            viewActivity.add(tr.getEndStation());
+            viewActivity.add(tr.getPrice());
+        }
+        return viewActivity;
     }
 }
 

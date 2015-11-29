@@ -15,13 +15,17 @@ import java.util.List;
  */
 public class DSTouchScreen extends AbstractIODevice {
 
-    
+    private KeyReader keyReader;
     /**
      * 
      * @param instanceName  
      */
     public DSTouchScreen(String instanceName) {
-        super(instanceName);   
+        super(instanceName);
+        
+        //Used to ask for key input using method in KeyReader class
+        
+        keyReader = new KeyReader(instanceName + ".kr");
     }
     
     
@@ -94,8 +98,16 @@ public class DSTouchScreen extends AbstractIODevice {
     public void viewActivity() {
         logger.fine(getInstanceName());
         
-        viewActivityObserver.viewActivityReceived();
+        showPrompt("Please insert key.");
         
+        //Gets the user's key identification
+        String keyId = keyReader.waitForKeyInsertion(); 
+        
+        logger.fine("Key" + keyId + "Received");
+
+        //Prints User Activity
+        
+        showUserActivity(viewActivityObserver.viewActivityReceived(keyId));
     }
     
     /* 
@@ -133,7 +145,6 @@ public class DSTouchScreen extends AbstractIODevice {
 
     public void showUserActivity(List<String> activityData) {
         logger.fine(getInstanceName());
-        logger.fine(getInstanceName());
         
         String deviceClass = "DSTouchScreen";
         String deviceInstance = getInstanceName();
@@ -142,7 +153,7 @@ public class DSTouchScreen extends AbstractIODevice {
         List<String> messageArgs = new ArrayList<String>();
         String[] preludeArgs = 
             {"ordered-tuples","4",
-             "HireTime","HireDS","ReturnDS","Duration (min)"};
+             "HireTime (min)","HireDS","ReturnDS","Price"}; //Changed tuples from Hire Time HireDS ReturnDS Duration (min)
         messageArgs.addAll(Arrays.asList(preludeArgs));
         messageArgs.addAll(activityData);
         
