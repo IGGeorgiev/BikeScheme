@@ -57,7 +57,7 @@ public class Hub implements AddDStationObserver,
 		// The idiom of an anonymous class is used here, to make it easy
 		// for hub code to process multiple timed notification, if needed.
 
-
+		
         Clock.createInstance();
 		Clock.getInstance().scheduleNotification(
 				new TimedNotificationObserver() {
@@ -73,9 +73,8 @@ public class Hub implements AddDStationObserver,
 						{ "A", "100", "200", "HIGH", "19", "20", "B", "300",
 								"-500", "LOW", "1", "50" };
 								*/
-						String[] occupancyArray = populateOccupancyArray();
-
-						List<String> occupancyData = Arrays.asList(occupancyArray);
+						
+						List<String> occupancyData = populateFullOccupancyList();
 						display.showOccupancy(occupancyData);
 					}
 
@@ -254,29 +253,27 @@ public class Hub implements AddDStationObserver,
     }
     
     /**
-     * Populates an array of all DStations in the database in the form:
+     * Populates a List of all DStations in the database in the form:
      * "DSName","East","North","Status","#Occupied","#DPoints"
      * 
      * @return
      */
     
-    public String[] populateOccupancyArray(){
+    public List<String> populateFullOccupancyList(){
       //FIRST PRINT HIGH AND LOW OCCUPIED DSTATIONS
-        String[] occupancyArray = new String[dockingStationMap.size()*6];
-        int i = 0;
+        List<String> occupancyList = new ArrayList<String>();
         for(String s : dockingStationMap.keySet()){
             DStation dStation = dockingStationMap.get(s);
             double occupancyRatio =(double) dStation.getFreePoints()/
                                             dStation.getNumberOfPoints();
             if(occupancyRatio >= 0.85 || occupancyRatio <= 0.15){
-                occupancyArray[i]=dStation.getInstanceName();
-                occupancyArray[i+1]=String.format("%d", dStation.getEastPos());
-                occupancyArray[i+2]=String.format("%d", dStation.getNorthPos());
-                occupancyArray[i+3]=dStation.getStatus();
-                occupancyArray[i+4]=String.format("%d", dStation.getNumberOfPoints()-
-                                                        dStation.getFreePoints());
-                occupancyArray[i+5]=String.format("%d", dStation.getNumberOfPoints());
-                i+=6;
+                occupancyList.add(dStation.getInstanceName());
+                occupancyList.add(String.format("%d", dStation.getEastPos()));
+                occupancyList.add(String.format("%d", dStation.getNorthPos()));
+                occupancyList.add(dStation.getStatus());
+                occupancyList.add(String.format("%d", dStation.getNumberOfPoints()-
+                                                        dStation.getFreePoints()));
+                occupancyList.add(String.format("%d", dStation.getNumberOfPoints()));
             }
         }
         //NOW PRINT THE OTHER DSTATIONS
@@ -285,18 +282,17 @@ public class Hub implements AddDStationObserver,
             double occupancyRatio =(double) dStation.getFreePoints()/
                                             dStation.getNumberOfPoints();
             if(occupancyRatio < 0.85 && occupancyRatio > 0.15){
-                occupancyArray[i]=dStation.getInstanceName();
-                occupancyArray[i+1]=String.format("%d", dStation.getEastPos());
-                occupancyArray[i+2]=String.format("%d", dStation.getNorthPos());
-                occupancyArray[i+3]=dStation.getStatus();
-                occupancyArray[i+4]=String.format("%d", dStation.getNumberOfPoints()-
-                                                        dStation.getFreePoints());
-                occupancyArray[i+5]=String.format("%d", dStation.getNumberOfPoints());
-                i+=6;
+                occupancyList.add(dStation.getInstanceName());
+                occupancyList.add(String.format("%d", dStation.getEastPos()));
+                occupancyList.add(String.format("%d", dStation.getNorthPos()));
+                occupancyList.add(dStation.getStatus());
+                occupancyList.add(String.format("%d", dStation.getNumberOfPoints()-
+                                                        dStation.getFreePoints()));
+                occupancyList.add(String.format("%d", dStation.getNumberOfPoints()));
             }
         }
         //FINALLY RETURN THE POPULATED ARRAY
-        return occupancyArray;
+        return occupancyList;
     }
     
     //======================POSSIBLE CONNECTION TO BANKING SERVER======================
