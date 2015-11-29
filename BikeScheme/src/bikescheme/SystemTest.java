@@ -112,8 +112,8 @@ public class SystemTest {
         input ("2 08:02, Clock, clk, tick");
         expect("2 08:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
              + "DSName, East, North, Status, #Occupied, #DPoints,"
-             + "     A,  100,   200,   HIGH,        19,       20," 
-             + "     B,  300,  -500,    LOW,         1,       50");
+             + "     A,    0,     0,    LOW,         0,        5," 
+             + "     B,  400,   300,    LOW,         0,        3");
     }
     
     /**
