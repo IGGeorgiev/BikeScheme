@@ -153,11 +153,20 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         logger.fine(getInstanceName());
         addBikeObserver.addBike(bikeId, keyId);
     }
-
+    
+    //==========CODE FOR HANDLING VIEW ACTIVITY USE CASE=========
+    
+    private ViewActivityObserver viewActivityObserver;
+    
+    public void setViewActivityObserver(ViewActivityObserver o){
+        viewActivityObserver = o;
+    }
+    
     @Override
-    public void viewActivityReceived() {
-        // TODO Auto-generated method stub
+    public List<String> viewActivityReceived(String keyId) {
+        logger.fine(getInstanceName());
         
+        return viewActivityObserver.viewActivityReceived(keyId);
     }
  
 

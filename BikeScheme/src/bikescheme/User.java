@@ -9,6 +9,7 @@ public class User {
     private String cardDetails;
     private String keyId;
     private Date startDate;
+    private String startPoint;  //Starting point of Trip
     private List<Trip> trips;
     
     
@@ -43,13 +44,20 @@ public class User {
         this.keyId = keyId;
     }
     
-    public void startUsage(Date date){
+    public void startUsage(Date date, String startPoint){
         this.startDate = date;
+        this.startPoint = startPoint;
     }
     
-    public void endUsage(Date date){
+    public void endUsage(Date date, String endPoint){
         Trip tr = new Trip(startDate, date);
         trips.add(tr);
+        tr.setStartStation(startPoint);
+        tr.setEndStation(endPoint);
+    }
+    
+    public List<Trip> getTrips(){
+        return trips;
     }
     
 }
