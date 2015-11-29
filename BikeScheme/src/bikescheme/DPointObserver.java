@@ -6,6 +6,6 @@ package bikescheme;
  *
  */
 public interface DPointObserver {
-    public void disassociateBikeFromUser(String bikeId, String endPoint);
-    public void associateBikeToUser(String bikeId, String keyId, String startPoint);
+    public void disassociateBikeFromUser(String bikeId);
+    public void associateBikeToUser(String bikeId, String keyId);
 }
