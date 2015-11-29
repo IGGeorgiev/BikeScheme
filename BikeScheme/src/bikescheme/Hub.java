@@ -129,22 +129,26 @@ public class Hub implements AddDStationObserver,
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========    
     
     @Override
-    public void returnBike(String bikeId) {         //TODO Needs to pass arguments to User Class in the form of endUsage(Date endDate, String endDStation)
-        Bike bike = findBikeById(bikeId);
+    public void returnBike(String bikeId, String endPoint) {//TODO Needs to pass arguments to User Class in 
+        Bike bike = findBikeById(bikeId);  //the form of endUsage(Date endDate, String endDStation)
         if(inUse.get(bike)==null){
             logger.fine(HUBNAME+": bike added by Staff.");
         }else{
             logger.fine(HUBNAME+": bike returned by Customer.");
+            //TODO add code here
+            User user = findUserByBikeId(bikeId);
+            user.endUsage(Clock.getInstance().getDateAndTime(), endPoint);
             inUse.remove(bike);
-                    }
+        }
     }
     //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========   
     @Override
-    public void addBike(String bikeId, String keyId) {
+    public void addBike(String bikeId, String keyId, String startPoint) {
         // TODO add implementation of denying to lend bike
         Bike bike = findBikeById(bikeId);
         User user = findUserByKeyId(bikeId);
         inUse.put(bike,user);
+        user.startUsage(Clock.getInstance().getDateAndTime(), startPoint);
     }
     //=======================HELPER FUNCTIONS ==============================
     /**
@@ -173,7 +177,19 @@ public class Hub implements AddDStationObserver,
         }
         return null;
     }
-
+    /**
+     * Given a unique bike ID, returns the user it's
+     * associated with or null if bike with such ID
+     * doesn't exist or is not associated with the user
+     *  
+     * @return User
+     */
+    public User findUserByBikeId(String bikeId){
+        Bike bike = findBikeById(bikeId);
+        if(bike == null)return null;
+        User user = inUse.get(bike);    
+        return user;
+    }
     /**
      * 
      * Returns a list of Strings depicting user activity

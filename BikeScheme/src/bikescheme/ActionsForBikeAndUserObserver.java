@@ -7,6 +7,6 @@ package bikescheme;
  *
  */
 public interface ActionsForBikeAndUserObserver {
-    public void returnBike(String bikeId);
-    public void addBike(String bikeId, String keyId);
+    public void returnBike(String bikeId, String endPoint);
+    public void addBike(String bikeId, String keyId, String startPoint);
 }

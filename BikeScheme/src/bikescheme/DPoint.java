@@ -75,7 +75,7 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     public void keyInserted(String keyId) {
         logger.fine(getInstanceName());
         
-        keyInserted.associateBikeToUser(keyId, this.bikeId);
+        keyInserted.associateBikeToUser(keyId, this.bikeId, this.getInstanceName());
         bikeLock.unlock();
         okLight.flash();       
     }
@@ -90,7 +90,7 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
     public void bikeDocked(String bikeId) {
         // TODO Auto-generated method stub
         logger.fine(getInstanceName());
-        dPointObserver.disassociateBikeFromUser(bikeId);
+        dPointObserver.disassociateBikeFromUser(bikeId, this.getInstanceName());
         bikeLock.lock();
         this.bikeId = bikeId;
         okLight.flash();

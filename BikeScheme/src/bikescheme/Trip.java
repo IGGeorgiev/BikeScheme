@@ -3,9 +3,6 @@ package bikescheme;
 import java.util.Date;
 
 /**
- * 
- * @author iggeorgiev
- *
  * This class aims to create an easily accessible container for
  * all required Trip information. Its constructor consisting of
  * start and end Date also calculates the full duration and 
@@ -13,6 +10,7 @@ import java.util.Date;
  * 
  * Getters and setters for the start and end station are also included.
  * NOTE: getters for price and duration return values of type String !
+ * @author iggeorgiev
  */
 
 public class Trip {

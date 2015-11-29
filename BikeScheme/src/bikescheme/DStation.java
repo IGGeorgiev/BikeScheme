@@ -138,9 +138,9 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     }
     
     @Override
-    public void disassociateBikeFromUser(String bikeId) {
+    public void disassociateBikeFromUser(String bikeId, String endPoint) {
         logger.fine(getInstanceName());
-        removeBikeObserver.returnBike(bikeId);
+        removeBikeObserver.returnBike(bikeId, endPoint);
     }
     //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========
     private ActionsForBikeAndUserObserver addBikeObserver;
@@ -149,9 +149,9 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     }
     
     @Override
-    public void associateBikeToUser(String bikeId, String keyId) {
+    public void associateBikeToUser(String bikeId, String keyId, String startPoint) {
         logger.fine(getInstanceName());
-        addBikeObserver.addBike(bikeId, keyId);
+        addBikeObserver.addBike(bikeId, keyId, startPoint);
     }
     
     //==========CODE FOR HANDLING VIEW ACTIVITY USE CASE=========
