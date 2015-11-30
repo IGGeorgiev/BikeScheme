@@ -40,7 +40,7 @@ public class SystemTest {
      */
     @Test
     public void viewActivity(){
-        //TODO
+        setupBikeConfig
     }
     
     @Test
@@ -97,13 +97,13 @@ public class SystemTest {
         input("1 07:00, HubTerminal, ht, addDStation, A,   0,   0, 5");
         input("1 07:00, HubTerminal, ht, addDStation, B, 400, 300, 3");
     }
-    public void setupAUserConfig(String username){//KEY IS 
+    public void setupAUserConfig(String username,String DStation, int keyNum){//KEY IS 
         logger.info("Setting up user: "+username);
         input ("2 09:05, DSTouchScreen, A.ts, startReg,"+username);
         expect("2 09:05, CardReader, A.cr, enterCardAndPin");
 
         input ("2 09:06, CardReader, A.cr, checkCard,"+ username+"-card-auth");
-        expect("2 09:06, KeyIssuer, A.ki, keyIssued, A.ki-1");
+        expect("2 09:06, KeyIssuer, A.ki, keyIssued, " + DStation + ".ki-" + keyNum);
 
     }
     public void setupABikeConfig(String bikeId){//AT STATION B
