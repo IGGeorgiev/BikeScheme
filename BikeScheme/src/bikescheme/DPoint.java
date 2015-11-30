@@ -37,20 +37,22 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         keyReader = new KeyReader(instanceName + ".kr");
         keyReader.setObserver(this);
         okLight = new OKLight(instanceName + ".ok");
-        bikeLock = new BikeLock(instanceName+"."+index+".bl");
-        bikeSensor = new BikeSensor(instanceName+"."+index+ ".bs");
+        bikeLock = new BikeLock(instanceName+".bl");
+        bikeSensor = new BikeSensor(instanceName+".bs");
         bikeSensor.setBikeDockingObserver(this);
-        bikeId = null;
+        bikeId = "";
         this.instanceName = instanceName;
         this.index = index;
     }
     
     public void setDistributor(EventDistributor d) {
         keyReader.addDistributorLinks(d); 
+        bikeSensor.addDistributorLinks(d);
     }
     
     public void setCollector(EventCollector c) {
         okLight.setCollector(c);
+        bikeLock.setCollector(c);
         
     }
     
@@ -74,10 +76,17 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
      */
     public void keyInserted(String keyId) {
         logger.fine(getInstanceName());
-        
-        keyInserted.associateBikeToUser(keyId, this.bikeId);
-        bikeLock.unlock();
-        bikeId = null;
+        if(!bikeId.equals("")){
+            // logger.fine("I AM HERE DAMMIT");
+            boolean shouldContinue = keyInserted.associateBikeToUser(keyId, this.bikeId);
+            //logger.fine("I AM HERE DAMMIT");
+            if(shouldContinue){
+                bikeLock.unlock();
+                bikeId = "";
+            }else{
+                okLight.flash();
+            }
+        }
         okLight.flash();       
     }
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
@@ -94,6 +103,7 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         dPointObserver.disassociateBikeFromUser(bikeId);
         bikeLock.lock();
         this.bikeId = bikeId;
+        logger.fine(getInstanceName()+" bikeId is : "+this.bikeId);
         okLight.flash();
     }
  

@@ -57,12 +57,12 @@ public class BikeSensor extends AbstractInputDevice {
     /**
      * Model insert key operation on a key reader object
      * 
-     * @param keyId
+     * @param bikeId
      */
-    public void dockBike(String keyId) {
+    public void dockBike(String bikeId) {
         logger.fine(getInstanceName());
         
-        BikeDockingObserver.bikeDocked(keyId);
+        BikeDockingObserver.bikeDocked(bikeId);
     }
 
     /*

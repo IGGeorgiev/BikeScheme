@@ -43,6 +43,29 @@ public class SystemTest {
         //TODO
     }
     
+    @Test
+    public void testDoubleFlashForRefusedUserKey(){
+        logger.info("Starting test: testDoubleFlashForRefusedUserKey");
+        setupDemoSystemConfig();
+        input ("2 09:00, BikeSensor,B.2.bs, dockBike, bike-2");
+        expect("2 09:00, BikeLock,  B.2.bl, locked");
+        expect("2 09:00, OKLight,   B.2.ok, flashed");
+        input ("2 09:30, KeyReader, B.2.kr, insertKey, key-2");
+        expect("2 09:30, OKLight,   B.2.ok, flashed");
+        expect("2 09:30, OKLight,   B.2.ok, flashed");
+
+    }
+    @Test
+    public void testHireBike(){
+        logger.info("Starting test: testHireBike");
+        setupDemoSystemConfig();
+        setupAUserConfig("Gosho");//key is A.ki-1
+        setupABikeConfig("bike-1");//bike at station 2, bikeId = bike-2
+        input ("2 09:35, KeyReader, B.2.kr, insertKey, A.ki-1");
+        expect("2 09:35, BikeLock,  B.2.bl, unlocked");
+        expect("2 09:35, OKLight,   B.2.ok, flashed");
+        
+    }
     /**
      * 
      * Setup demonstration system configuration:
@@ -74,7 +97,20 @@ public class SystemTest {
         input("1 07:00, HubTerminal, ht, addDStation, A,   0,   0, 5");
         input("1 07:00, HubTerminal, ht, addDStation, B, 400, 300, 3");
     }
+    public void setupAUserConfig(String username){//KEY IS 
+        logger.info("Setting up user: "+username);
+        input ("2 09:05, DSTouchScreen, A.ts, startReg,"+username);
+        expect("2 09:05, CardReader, A.cr, enterCardAndPin");
 
+        input ("2 09:06, CardReader, A.cr, checkCard,"+ username+"-card-auth");
+        expect("2 09:06, KeyIssuer, A.ki, keyIssued, A.ki-1");
+
+    }
+    public void setupABikeConfig(String bikeId){//AT STATION B
+        input ("2 09:00, BikeSensor,B.2.bs, dockBike,"+ bikeId);
+        expect("2 09:00, BikeLock,  B.2.bl, locked");
+        expect("2 09:00, OKLight,   B.2.ok, flashed");
+    }
     /**
      *  Run the "Register User" use case.
      * 
@@ -118,7 +154,7 @@ public class SystemTest {
              + "     A,    0,     0,    LOW,         0,        5," 
              + "     B,  400,   300,    LOW,         0,        3");
     }
-    
+        
     /**
      * Run a test to demonstrate basic docking point interface
      * functionality.
@@ -132,6 +168,7 @@ public class SystemTest {
         
         input ("2 09:30, KeyReader, B.2.kr, insertKey, key-2");
         expect("2 09:30, OKLight,   B.2.ok, flashed");
+
     }
     
     
