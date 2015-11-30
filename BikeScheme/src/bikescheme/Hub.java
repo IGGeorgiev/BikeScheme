@@ -221,16 +221,16 @@ public class Hub implements AddDStationObserver,
     @Override
     public List<String> viewActivityReceived(String keyId) {
         logger.fine("Currently at " + HUBNAME);
-        
-        User usr = findUserByKeyId(keyId);
         List<String> viewActivity = new ArrayList<String>();
-        
-        logger.fine("Fetching Trip Information at " + HUBNAME);
-        for(Trip tr : usr.getTrips()){
-            viewActivity.add(tr.getDuration());
-            viewActivity.add(tr.getStartStation());
-            viewActivity.add(tr.getEndStation());
-            viewActivity.add(tr.getStartTime());
+        User usr = findUserByKeyId(keyId);
+        if (usr != null){
+            logger.fine("Fetching Trip Information at " + HUBNAME);
+            for(Trip tr : usr.getTrips()){
+                viewActivity.add(tr.getDuration());
+                viewActivity.add(tr.getStartStation());
+                viewActivity.add(tr.getEndStation());
+                viewActivity.add(tr.getStartTime());
+            }
         }
         return viewActivity;
     }

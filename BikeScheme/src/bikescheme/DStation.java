@@ -109,7 +109,6 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         logger.fine("Key " + keyId + " issued");
         
         addUserObserver.addUser(keyId, personalInfo, cardDetails);
-        logger.fine("END");
     }
     
     public String getInstanceName() {

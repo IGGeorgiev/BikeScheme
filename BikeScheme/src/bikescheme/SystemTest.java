@@ -40,6 +40,7 @@ public class SystemTest {
      */
     @Test
     public void viewActivity(){
+        logger.info("Start viewActivity test:");
         setupDemoSystemConfig();
         setupABikeConfig("B.2","bike-1");
         setupABikeConfig("A.1","bike-2");
@@ -48,9 +49,17 @@ public class SystemTest {
         setupAUserConfig("Alice","A",1);
         setupAUserConfig("Tim","B",1);
         input("2 23:30, KeyReader, B.2.kr, insertKey, B.ki-1");
+        expect("2 23:30, BikeLock, B.2.bl, unlock");
         expect("2 23:30, OKLight, B.2.ok, flashed");
-        input("2 23:55, BikeSensor, A.1.bs, dockBike, bike-1");
-        
+        input("2 23:55, BikeSensor, A.4.bs, dockBike, bike-1");
+        expect("2 23:55, BikeLock, A.4.bl, lock");
+        expect("2 23:55, OKLight, A.4.ok, flashed");
+        input("2 23:58, DSTouchScreen, A.ts, viewActivity");
+        expect("2 23:58, DSTouchScreen, A.ts, showPrompt, Please insert key.");
+        input("2 23:58, KeyReader, A.ts.kr, keyInsertion, B.ki-1");
+        expect("2 23:58, DSTouchScreen, A.ts, showUserActivity, unordered-tuples, 4 ," 
+                + "HireTime, HireDS, ReturnDS, Duration (min)"
+                + "23:30, B, A, 25");
         
        // setupBikeConfig
     }
@@ -74,7 +83,7 @@ public class SystemTest {
         setupAUserConfig("Gosho","A",1);//key is A.ki-1
         setupABikeConfig("B.2","bike-1");//bike at station 2, bikeId = bike-2
         setupAUserConfig("Mariika","A",2);
-        //setupABikeConfig("bike-1");//bike at station 2, bikeId = bike-2
+        setupABikeConfig("B.2","bike-1");//bike at station 2, bikeId = bike-2
         input ("2 09:35, KeyReader, B.2.kr, insertKey, A.ki-1");
         expect("2 09:35, BikeLock,  B.2.bl, unlocked");
         expect("2 09:35, OKLight,   B.2.ok, flashed");
@@ -120,12 +129,12 @@ public class SystemTest {
         input("1 07:00, HubTerminal, ht, addDStation, B, 400, 300, 3");
     }
     public void setupAUserConfig(String username,String DStation, int keyNum){
-        logger.info("Setting up user: "+username);
-        input ("2 09:05, DSTouchScreen, A.ts, startReg,"+username);
-        expect("2 09:05, CardReader, A.cr, enterCardAndPin");
+        logger.info("Setting up user: " + username);
+        input ("2 09:05, DSTouchScreen," + DStation  + ".ts, startReg," + username);
+        expect("2 09:05, CardReader, " + DStation  + ".cr, enterCardAndPin");
 
-        input ("2 09:06, CardReader, A.cr, checkCard,"+ username+"-card-auth");
-        expect("2 09:06, KeyIssuer, A.ki, keyIssued, " + DStation + ".ki-" + keyNum);
+        input ("2 09:06, CardReader, " + DStation  + ".cr, checkCard," + username+"-card-auth");
+        expect("2 09:06, KeyIssuer, " + DStation  + ".ki, keyIssued, " + DStation + ".ki-" + keyNum);
 
     }
     public void setupABikeConfig(String DPointId, String bikeId){

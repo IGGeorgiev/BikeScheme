@@ -11,7 +11,7 @@ public class User {
     private String keyId;
     private Date startDate;
     private String startPoint;  //Starting point of Trip
-    private List<Trip> trips;
+    private List<Trip> trips = new ArrayList<Trip>();
     
     
     
