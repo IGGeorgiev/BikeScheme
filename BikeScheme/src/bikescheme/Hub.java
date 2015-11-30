@@ -20,9 +20,9 @@ import java.util.ArrayList;
  */
 
 public class Hub implements AddDStationObserver,
-					ActionsForBikeAndUserObserver,
-					AddUserObserver,
-					ViewActivityObserver {
+					        ActionsForBikeAndUserObserver,
+					        AddUserObserver,
+					        ViewActivityObserver {
     
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
@@ -33,6 +33,8 @@ public class Hub implements AddDStationObserver,
 	private HubTerminal terminal;
 	private HubDisplay display;
 	private Map<String, DStation> dockingStationMap;
+	private KeyIssuer keyIssuer;
+	private List<String>staffIds;
 
 	/**
 	 * 
@@ -51,8 +53,10 @@ public class Hub implements AddDStationObserver,
 		display = new HubDisplay("hd");
 		dockingStationMap = new HashMap<String, DStation>();
 		bikes = new ArrayList<Bike>();
-	    users = new ArrayList<User>();;
-	    inUse = new HashMap<Bike,User>(); 		
+	    users = new ArrayList<User>();
+	    inUse = new HashMap<Bike,User>();
+	    keyIssuer = new KeyIssuer(HUBNAME);
+	    staffIds = new ArrayList<String>();
 		// Schedule timed notification for generating updates of
 		// hub display.
 
@@ -182,13 +186,19 @@ public class Hub implements AddDStationObserver,
         }
         
     }
-    //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========   
-    @Override
+    //=========CODE FOR HANDLING HIRE BIKE AND REMOVE BIKE USE-CASES=========   
+    @Override//TODO
     public boolean addBike(String keyId, String bikeId, String startPoint) {        
         logger.fine(HUBNAME);
         Bike bike = findBikeById(bikeId);
         User user = findUserByKeyId(keyId);
-        boolean shouldContinue = user != null;
+        boolean isStaff = isStaffKey(keyId);
+        boolean isUser  = user != null;
+        boolean shouldContinue = isStaff || isUser;
+
+        if(isStaff && bike != null){
+            bikes.remove(bike);
+        }
         if(shouldContinue && bike != null){
             inUse.put(bike,user);
             user.startUsage(Clock.getInstance().getDateAndTime(), startPoint);
@@ -221,7 +231,10 @@ public class Hub implements AddDStationObserver,
         }
         return viewActivity;
     }
-    
+    //=========CODE FOR ISSUING STAFF MEMBER KEYS(USED FOR REMOVING BIKES)=========
+    public void issueStaffKey(){//TODO
+        staffIds.add(this.keyIssuer.issueKey());
+    }
     //=======================HELPER FUNCTIONS ==============================
     /**
      * Given a unique bike ID, returns the bike it's
@@ -261,6 +274,18 @@ public class Hub implements AddDStationObserver,
         if(bike == null)return null;
         User user = inUse.get(bike);    
         return user;
+    }
+    /**
+     * Given a unique key ID, returns true
+     * if the key is a staff key.
+     *  
+     * @return boolean
+     */
+    public boolean isStaffKey(String keyId){
+        for(String staffId : staffIds){
+            if (staffId.equals(keyId))return true;
+        }
+        return false;
     }
     
     /**
