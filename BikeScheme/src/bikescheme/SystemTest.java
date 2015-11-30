@@ -72,12 +72,9 @@ public class SystemTest {
         logger.info("Starting test: testHireBike");
         setupDemoSystemConfig();
         setupAUserConfig("Gosho","A",1);//key is A.ki-1
-<<<<<<< HEAD
         setupABikeConfig("B.2","bike-1");//bike at station 2, bikeId = bike-2
-=======
         setupAUserConfig("Mariika","A",2);
-        setupABikeConfig("bike-1");//bike at station 2, bikeId = bike-2
->>>>>>> refs/remotes/origin/master
+        //setupABikeConfig("bike-1");//bike at station 2, bikeId = bike-2
         input ("2 09:35, KeyReader, B.2.kr, insertKey, A.ki-1");
         expect("2 09:35, BikeLock,  B.2.bl, unlocked");
         expect("2 09:35, OKLight,   B.2.ok, flashed");
