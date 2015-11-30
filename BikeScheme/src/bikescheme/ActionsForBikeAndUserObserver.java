@@ -16,4 +16,5 @@ public interface ActionsForBikeAndUserObserver {
      * @return 
      */
     public boolean addBike(String keyId, String bikeId, String startPoint);
+    public void reportBikeFaulty(String bikeId);
 }

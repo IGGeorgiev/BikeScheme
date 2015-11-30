@@ -162,22 +162,27 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     }
     
     //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========
-    private ActionsForBikeAndUserObserver addBikeObserver;
+    private ActionsForBikeAndUserObserver bikeActionObserver;
     public void setAddBikeObserver(ActionsForBikeAndUserObserver o){
-        addBikeObserver = o;
+        bikeActionObserver = o;
     }
     
     @Override
     public boolean associateBikeToUser(String keyId, String bikeId) {
         logger.fine(getInstanceName());
-        boolean shouldContinue = addBikeObserver.addBike(keyId, bikeId, this.getInstanceName());
+        boolean shouldContinue = bikeActionObserver.addBike(keyId, bikeId, this.getInstanceName());
         if(shouldContinue){
             freePoints++;
         }
         return shouldContinue;
         
     }
-    
+    //=========CODE FOR HANDLING FAULTY BIKE USE-CASE=========
+    @Override
+    public void reportBikeFaulty(String bikeId) {
+        logger.fine(getInstanceName());
+        bikeActionObserver.reportBikeFaulty(bikeId);
+    }
     //==========CODE FOR HANDLING VIEW ACTIVITY USE CASE=========
     
     private ViewActivityObserver viewActivityObserver;
@@ -192,6 +197,7 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         
         return viewActivityObserver.viewActivityReceived(keyId);
     }
+   
  
 
 }

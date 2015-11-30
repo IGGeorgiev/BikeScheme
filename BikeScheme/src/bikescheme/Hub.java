@@ -198,9 +198,12 @@ public class Hub implements AddDStationObserver,
 
         if(isStaff && bike != null){
             bikes.remove(bike);
+            logger.fine(HUBNAME+"~ bike is removed");
+
         }
         if(shouldContinue && bike != null){
             inUse.put(bike,user);
+            logger.fine(HUBNAME+"~ bike is hired");
             user.startUsage(Clock.getInstance().getDateAndTime(), startPoint);
         }
         return shouldContinue;
@@ -232,8 +235,18 @@ public class Hub implements AddDStationObserver,
         return viewActivity;
     }
     //=========CODE FOR ISSUING STAFF MEMBER KEYS(USED FOR REMOVING BIKES)=========
-    public void issueStaffKey(){//TODO
+    public void issueStaffKey(){
+        logger.fine(HUBNAME+ "~ issuing staff key");
         staffIds.add(this.keyIssuer.issueKey());
+    }
+    //=========CODE FOR HANDLING FAULTY BIKE USE-CASE=========
+    @Override
+    public void reportBikeFaulty(String bikeId) {
+        logger.fine(HUBNAME+"~ reporting bike fault");
+        Bike bike = findBikeById(bikeId);
+        if(bike != null){
+            bike.setFaulty(true);
+        }
     }
     //=======================HELPER FUNCTIONS ==============================
     /**
@@ -336,5 +349,7 @@ public class Hub implements AddDStationObserver,
     public void applyCharges(int charge, String personalDetails, String cardAuthenticationNumber){
         //Applies charges to the given card authentication number relative to the user's personal details
     }
+
+    
 }
 

@@ -3,6 +3,7 @@
  */
 package bikescheme;
 
+import java.util.Date;
 import java.util.logging.Logger;
 
 /**
@@ -12,15 +13,21 @@ import java.util.logging.Logger;
  * @author pbj
  *
  */
-public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
+public class DPoint implements KeyInsertionObserver, 
+                               BikeDockingObserver,
+                               FaultButtonObserver{
     public static final Logger logger = Logger.getLogger("bikescheme");
     private String bikeId;
     private BikeSensor bikeSensor;
     private BikeLock bikeLock;
     private KeyReader keyReader; 
     private OKLight okLight;
+    private FaultLight faultLight;
+    private FaultButton faultButton;
     private String instanceName;
     private int index;
+    private Date bikeDocked;
+
     
     /**
      * 
@@ -39,19 +46,24 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         okLight = new OKLight(instanceName + ".ok");
         bikeLock = new BikeLock(instanceName+".bl");
         bikeSensor = new BikeSensor(instanceName+".bs");
+        faultButton = new FaultButton(instanceName+".fb");
+        faultLight = new FaultLight(instanceName+".fl");
         bikeSensor.setBikeDockingObserver(this);
         bikeId = "";
         this.instanceName = instanceName;
         this.index = index;
+        this.bikeDocked = null;
     }
     
     public void setDistributor(EventDistributor d) {
         keyReader.addDistributorLinks(d); 
         bikeSensor.addDistributorLinks(d);
+        faultButton.setDistributor(d);
     }
     
     public void setCollector(EventCollector c) {
         okLight.setCollector(c);
+        faultLight.setCollector(c);
         bikeLock.setCollector(c);
         
     }
@@ -72,22 +84,24 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
      * Associate User with the Bike.
      * Unlock the bike.
      * Flash the OK light.
+     * Flash Fault Light if something goes wrong along the way
      *
      */
     public void keyInserted(String keyId) {
         logger.fine(getInstanceName());
-        if(!bikeId.equals("")){
-            // logger.fine("I AM HERE DAMMIT");
+        if(!bikeId.equals("")&& !faultLight.isOn()){
             boolean shouldContinue = keyInserted.associateBikeToUser(keyId, this.bikeId);
-            //logger.fine("I AM HERE DAMMIT");
             if(shouldContinue){
                 bikeLock.unlock();
                 bikeId = "";
+                okLight.flash();   
             }else{
-                okLight.flash();
+                faultLight.flash();
             }
+        }else{
+            faultLight.flash();
         }
-        okLight.flash();       
+            
     }
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
     private DPointObserver dPointObserver;
@@ -103,8 +117,19 @@ public class DPoint implements KeyInsertionObserver, BikeDockingObserver {
         dPointObserver.disassociateBikeFromUser(bikeId);
         bikeLock.lock();
         this.bikeId = bikeId;
+        this.bikeDocked = Clock.getInstance().getDateAndTime();
         logger.fine(getInstanceName()+" bikeId is : "+this.bikeId);
         okLight.flash();
+    }
+    //=========CODE FOR HANDLING FAULTY BIKE USE-CASE=========
+    @Override
+    public void onPress() {
+        Date pressed = Clock.getInstance().getDateAndTime();
+        int minutes = Clock.minutesBetween(this.bikeDocked, pressed);
+        if(minutes <= 2){
+            this.faultLight.turnOn();
+        }
+        dPointObserver.reportBikeFaulty(this.bikeId);
     }
  
 }

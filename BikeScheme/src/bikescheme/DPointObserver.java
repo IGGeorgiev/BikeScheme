@@ -13,4 +13,5 @@ public interface DPointObserver {
      * @param bikeId
      */
     public boolean associateBikeToUser(String keyId, String bikeId);
+    public void reportBikeFaulty(String bikeId);
 }
