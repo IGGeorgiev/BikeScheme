@@ -40,6 +40,18 @@ public class SystemTest {
      */
     @Test
     public void viewActivity(){
+        setupDemoSystemConfig();
+        setupABikeConfig("B.2","bike-1");
+        setupABikeConfig("A.1","bike-2");
+        setupABikeConfig("A.2","bike-3");
+        setupABikeConfig("A.3","bike-4");
+        setupAUserConfig("Alice","A",1);
+        setupAUserConfig("Tim","B",1);
+        input("2 23:30, KeyReader, B.2.kr, insertKey, B.ki-1");
+        expect("2 23:30, OKLight, B.2.ok, flashed");
+        input("2 23:55, BikeSensor, A.1.bs, dockBike, bike-1");
+        
+        
        // setupBikeConfig
     }
     
@@ -60,8 +72,12 @@ public class SystemTest {
         logger.info("Starting test: testHireBike");
         setupDemoSystemConfig();
         setupAUserConfig("Gosho","A",1);//key is A.ki-1
+<<<<<<< HEAD
+        setupABikeConfig("B.2","bike-1");//bike at station 2, bikeId = bike-2
+=======
         setupAUserConfig("Mariika","A",2);
         setupABikeConfig("bike-1");//bike at station 2, bikeId = bike-2
+>>>>>>> refs/remotes/origin/master
         input ("2 09:35, KeyReader, B.2.kr, insertKey, A.ki-1");
         expect("2 09:35, BikeLock,  B.2.bl, unlocked");
         expect("2 09:35, OKLight,   B.2.ok, flashed");
@@ -106,7 +122,7 @@ public class SystemTest {
         input("1 07:00, HubTerminal, ht, addDStation, A,   0,   0, 5");
         input("1 07:00, HubTerminal, ht, addDStation, B, 400, 300, 3");
     }
-    public void setupAUserConfig(String username,String DStation, int keyNum){//KEY IS 
+    public void setupAUserConfig(String username,String DStation, int keyNum){
         logger.info("Setting up user: "+username);
         input ("2 09:05, DSTouchScreen, A.ts, startReg,"+username);
         expect("2 09:05, CardReader, A.cr, enterCardAndPin");
@@ -115,11 +131,16 @@ public class SystemTest {
         expect("2 09:06, KeyIssuer, A.ki, keyIssued, " + DStation + ".ki-" + keyNum);
 
     }
-    public void setupABikeConfig(String bikeId){//AT STATION B
-        input ("2 09:00, BikeSensor,B.2.bs, dockBike,"+ bikeId);
-        expect("2 09:00, BikeLock,  B.2.bl, locked");
+    public void setupABikeConfig(String DPointId, String bikeId){
+        input ("2 09:00, BikeSensor," + DPointId + ".bs, dockBike,"+ bikeId);
+        expect("2 09:00, BikeLock," + DPointId + ".bl, locked");
         expect("2 09:00, OKLight,   B.2.ok, flashed");
     }
+    
+    public void setupATrip(String startDStation,String endDStation){
+        
+    }
+    
     /**
      *  Run the "Register User" use case.
      * 
