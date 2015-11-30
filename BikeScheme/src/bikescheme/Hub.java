@@ -156,10 +156,11 @@ public class Hub implements AddDStationObserver,
 	
 	//====================ADDS USER TO USER LIST==============================
 	
-    public void addUser(String keyId, String personalDetails, String cardDetails){
+    public boolean addUser(String keyId, String personalDetails, String cardDetails){
         logger.fine("Recording user in " + HUBNAME);
         User user = new User(keyId,personalDetails,cardDetails);
         users.add(user);
+        return true;
     }
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========    
     

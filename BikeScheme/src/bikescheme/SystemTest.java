@@ -38,7 +38,10 @@ public class SystemTest {
      * 
      * 
      */
-    
+    @Test
+    public void viewActivity(){
+        //TODO
+    }
     
     /**
      * 
