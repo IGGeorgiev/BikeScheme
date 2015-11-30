@@ -78,7 +78,6 @@ public class SystemTest {
         expect("2 09:00, OKLight,   B.2.ok, flashed");
         input ("2 09:30, KeyReader, B.2.kr, insertKey, key-2");
         expect("2 09:30, FaultLight,   B.2.fl, flashed");
-        
 
     }
     @Test
@@ -101,6 +100,29 @@ public class SystemTest {
         setupAUserConfig("Gosho","A",1);//key is A.ki-1
         input ("2 09:35, KeyReader, B.2.kr, insertKey, A.ki-1");
         expect("2 09:35, OKLight,   B.2.ok, flashed");
+    }
+    @Test
+    public void testFaultButtonAndFaultLight(){
+        logger.info("Starting test: testFaultButtonAndFaultLight");
+        setupDemoSystemConfig();
+        
+        setupABikeConfig("B.2","bike-1");
+        setupABikeConfig("A.1","bike-2");
+        setupABikeConfig("A.2","bike-3");
+        setupABikeConfig("A.3","bike-4");
+        
+        setupAUserConfig("Tim","B",1);
+        
+        input ("2 23:30, KeyReader, B.2.kr, insertKey, B.ki-1");
+        expect("2 23:30, BikeLock, B.2.bl, unlocked");
+        expect("2 23:30, OKLight, B.2.ok, flashed");
+        
+        input ("2 23:55, BikeSensor, A.4.bs, dockBike, bike-1");
+        expect("2 23:55, BikeLock, A.4.bl, locked");
+        expect("2 23:55, OKLight, A.4.ok, flashed");
+        
+        input ("2 23:56, FaultButton, A.4.fb, pressed");
+        expect("2 23:56, FaultLight,  A.4.fl, turnedOn");
     }
     /**
      * 

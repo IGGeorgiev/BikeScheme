@@ -27,7 +27,7 @@ public class DPoint implements KeyInsertionObserver,
     private String instanceName;
     private int index;
     private Date bikeUnDocked;
-
+    private Date bikeDocked;
     
     /**
      * 
@@ -46,19 +46,21 @@ public class DPoint implements KeyInsertionObserver,
         okLight = new OKLight(instanceName + ".ok");
         bikeLock = new BikeLock(instanceName+".bl");
         bikeSensor = new BikeSensor(instanceName+".bs");
-        faultButton = new FaultButton(instanceName+".fb");
-        faultLight = new FaultLight(instanceName+".fl");
         bikeSensor.setBikeDockingObserver(this);
+        faultButton = new FaultButton(instanceName+".fb");
+        faultButton.setFaultButtonObserver(this);
+        faultLight = new FaultLight(instanceName+".fl");
         bikeId = "";
         this.instanceName = instanceName;
         this.index = index;
         this.bikeUnDocked = null;
+        this.bikeDocked = null;
     }
     
     public void setDistributor(EventDistributor d) {
         keyReader.addDistributorLinks(d); 
         bikeSensor.addDistributorLinks(d);
-        faultButton.setDistributor(d);
+        faultButton.addDistributorLinks(d);
     }
     
     public void setCollector(EventCollector c) {
@@ -117,6 +119,7 @@ public class DPoint implements KeyInsertionObserver,
         logger.fine(getInstanceName());
         dPointObserver.disassociateBikeFromUser(bikeId);
         bikeLock.lock();
+        this.bikeDocked = Clock.getInstance().getDateAndTime();
         this.bikeId = bikeId;
         logger.fine(getInstanceName()+" bikeId is : "+this.bikeId);
         okLight.flash();
@@ -125,7 +128,7 @@ public class DPoint implements KeyInsertionObserver,
     @Override
     public void onPress() {
         Date pressed = Clock.getInstance().getDateAndTime();
-        int minutes = Clock.minutesBetween(this.bikeUnDocked, pressed);
+        int minutes = Clock.minutesBetween(this.bikeDocked, pressed);
         if(minutes <= 2){
             this.faultLight.turnOn();
         }
