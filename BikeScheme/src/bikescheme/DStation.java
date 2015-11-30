@@ -14,7 +14,10 @@ import java.util.logging.Logger;
  * @author pbj
  *
  */
-public class DStation implements StartRegObserver, DPointObserver, ViewActivityObserver {
+public class DStation implements StartRegObserver,  
+                                 DPointObserver,
+                                 ViewActivityObserver
+                                 /*,KeyInsertionObserver*/ {
     public static final Logger logger = Logger.getLogger("bikescheme");
 
     private String instanceName;
@@ -23,7 +26,8 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     private int freePoints;
     
     private DSTouchScreen touchScreen;
-    private CardReader cardReader; 
+    private CardReader cardReader;
+    private KeyReader keyReader;
     private KeyIssuer keyIssuer;
     private List<DPoint> dockingPoints;
          
@@ -58,7 +62,10 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         cardReader = new CardReader(instanceName + ".cr");
         
         keyIssuer = new KeyIssuer(instanceName + ".ki");
-                
+        
+        keyReader = new KeyReader(instanceName+ ".kr");
+        //keyReader.setObserver(this);
+        
         freePoints = numPoints;
         
         dockingPoints = new ArrayList<DPoint>();
@@ -74,6 +81,7 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     void setDistributor(EventDistributor d) {
         touchScreen.addDistributorLinks(d); 
         cardReader.addDistributorLinks(d);
+        keyReader.addDistributorLinks(d);
         for (DPoint dp : dockingPoints) {
             dp.setDistributor(d);
         }
@@ -140,9 +148,9 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     }
     //======================HANDLES ADD USER REQUESTS=========================
     
-    private AddUserObserver addUserObserver;
+    private UserActivitiesObserver addUserObserver;
     
-    public void setAddUserObserver(AddUserObserver o){
+    public void setAddUserObserver(UserActivitiesObserver o){
         addUserObserver = o;
     }
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
@@ -183,19 +191,28 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
         bikeActionObserver.reportBikeFaulty(bikeId);
     }
     //==========CODE FOR HANDLING VIEW ACTIVITY USE CASE=========
+    /* @Override
+    public void keyInserted(String keyId) {
+        // TODO Auto-generated method stub
+        
+    }*/
+    private UserActivitiesObserver viewActivityObserver;
     
-    private ViewActivityObserver viewActivityObserver;
-    
-    public void setViewActivityObserver(ViewActivityObserver o){
+    public void setUserActivitiesObserver(UserActivitiesObserver o){
         viewActivityObserver = o;
     }
     
     @Override
-    public List<String> viewActivityReceived(String keyId) {
+    public void viewActivityReceived() {
         logger.fine(getInstanceName());
-        
-        return viewActivityObserver.viewActivityReceived(keyId);
+        this.touchScreen.showPrompt("Please insert key.");
+        logger.fine(getInstanceName());
+        String keyId = this.keyReader.waitForKeyInsertion();
+        logger.fine(getInstanceName());
+        this.touchScreen.showUserActivity(viewActivityObserver.viewActivityReceived(keyId));
     }
+
+    
    
  
 

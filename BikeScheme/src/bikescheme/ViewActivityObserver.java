@@ -19,6 +19,6 @@ import java.util.List;
  */
 public interface ViewActivityObserver {
     
-    List<String> viewActivityReceived(String s);
+    public void viewActivityReceived();
 
 }

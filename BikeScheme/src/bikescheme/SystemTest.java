@@ -42,38 +42,43 @@ public class SystemTest {
     public void viewActivity(){
         logger.info("Start viewActivity test:");
         setupDemoSystemConfig();
+        
         setupABikeConfig("B.2","bike-1");
         setupABikeConfig("A.1","bike-2");
         setupABikeConfig("A.2","bike-3");
         setupABikeConfig("A.3","bike-4");
+        
         setupAUserConfig("Alice","A",1);
         setupAUserConfig("Tim","B",1);
+        
         input("2 23:30, KeyReader, B.2.kr, insertKey, B.ki-1");
-        expect("2 23:30, BikeLock, B.2.bl, unlock");
+        expect("2 23:30, BikeLock, B.2.bl, unlocked");
         expect("2 23:30, OKLight, B.2.ok, flashed");
+        
         input("2 23:55, BikeSensor, A.4.bs, dockBike, bike-1");
-        expect("2 23:55, BikeLock, A.4.bl, lock");
+        expect("2 23:55, BikeLock, A.4.bl, locked");
         expect("2 23:55, OKLight, A.4.ok, flashed");
-        input("2 23:58, DSTouchScreen, A.ts, viewActivity");
-        expect("2 23:58, DSTouchScreen, A.ts, showPrompt, Please insert key.");
-        input("2 23:58, KeyReader, A.ts.kr, keyInsertion, B.ki-1");
-        expect("2 23:58, DSTouchScreen, A.ts, showUserActivity, unordered-tuples, 4 ," 
-                + "HireTime, HireDS, ReturnDS, Duration (min)"
-                + "23:30, B, A, 25");
+        
+        input ("2 23:58, DSTouchScreen, A.ts, viewActivity");
+        expect("2 23:58, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
+        input ("2 23:59, KeyReader    , A.kr, keyInsertion, B.ki-1");
+        expect("2 23:59, DSTouchScreen, A.ts, viewUserActivity, unordered-tuples, 4 ," 
+                + "HireTime, HireDS, ReturnDS, Duration (min),"
+                + "23:30   ,   B   ,    A    ,        25     ");
         
        // setupBikeConfig
     }
     
     @Test
-    public void testDoubleFlashForRefusedUserKey(){
-        logger.info("Starting test: testDoubleFlashForRefusedUserKey");
+    public void testFaultFlashForRefusedUserKey(){
+        logger.info("Starting test: testFaultFlashForRefusedUserKey");
         setupDemoSystemConfig();
         input ("2 09:00, BikeSensor,B.2.bs, dockBike, bike-2");
         expect("2 09:00, BikeLock,  B.2.bl, locked");
         expect("2 09:00, OKLight,   B.2.ok, flashed");
         input ("2 09:30, KeyReader, B.2.kr, insertKey, key-2");
-        expect("2 09:30, OKLight,   B.2.ok, flashed");
-        expect("2 09:30, OKLight,   B.2.ok, flashed");
+        expect("2 09:30, FaultLight,   B.2.fl, flashed");
+        
 
     }
     @Test
@@ -125,6 +130,7 @@ public class SystemTest {
      *   
      */
     public void setupDemoSystemConfig() {
+        logger.info("Starting demo configuration...");
         input("1 07:00, HubTerminal, ht, addDStation, A,   0,   0, 5");
         input("1 07:00, HubTerminal, ht, addDStation, B, 400, 300, 3");
     }
@@ -140,7 +146,7 @@ public class SystemTest {
     public void setupABikeConfig(String DPointId, String bikeId){
         input ("2 09:00, BikeSensor," + DPointId + ".bs, dockBike,"+ bikeId);
         expect("2 09:00, BikeLock," + DPointId + ".bl, locked");
-        expect("2 09:00, OKLight,   B.2.ok, flashed");
+        expect("2 09:00, OKLight, "+DPointId  +".ok, flashed");
     }
     
     public void setupATrip(String startDStation,String endDStation){
@@ -195,7 +201,7 @@ public class SystemTest {
      * Run a test to demonstrate basic docking point interface
      * functionality.
      * 
-     */
+     */ 
     @Test
     public void testKeyReaderAndOKLight() {
         logger.info("Starting test: testKeyReaderAndOKLight");

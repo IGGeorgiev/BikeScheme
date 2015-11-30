@@ -15,17 +15,13 @@ import java.util.List;
  */
 public class DSTouchScreen extends AbstractIODevice {
 
-    private KeyReader keyReader;
     /**
      * 
      * @param instanceName  
      */
     public DSTouchScreen(String instanceName) {
         super(instanceName);
-        
-        //Used to ask for key input using method in KeyReader class
-        
-        keyReader = new KeyReader(instanceName + ".kr");
+                
     }
     
     
@@ -97,17 +93,8 @@ public class DSTouchScreen extends AbstractIODevice {
      */
     public void viewActivity() {
         logger.fine(getInstanceName());
-        
-        showPrompt("Please insert key.");
-        
-        //Gets the user's key identification
-        String keyId = keyReader.waitForKeyInsertion(); 
-        
-        logger.fine("Key" + keyId + "Received");
 
-        //Prints User Activity
-        
-        showUserActivity(viewActivityObserver.viewActivityReceived(keyId));
+        viewActivityObserver.viewActivityReceived();
     }
     
     /* 

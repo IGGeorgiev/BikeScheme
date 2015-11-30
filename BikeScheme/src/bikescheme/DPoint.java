@@ -26,7 +26,7 @@ public class DPoint implements KeyInsertionObserver,
     private FaultButton faultButton;
     private String instanceName;
     private int index;
-    private Date bikeDocked;
+    private Date bikeUnDocked;
 
     
     /**
@@ -52,7 +52,7 @@ public class DPoint implements KeyInsertionObserver,
         bikeId = "";
         this.instanceName = instanceName;
         this.index = index;
-        this.bikeDocked = null;
+        this.bikeUnDocked = null;
     }
     
     public void setDistributor(EventDistributor d) {
@@ -93,13 +93,14 @@ public class DPoint implements KeyInsertionObserver,
             boolean shouldContinue = keyInserted.associateBikeToUser(keyId, this.bikeId);
             if(shouldContinue){
                 bikeLock.unlock();
+                this.bikeUnDocked = Clock.getInstance().getDateAndTime();
                 bikeId = "";
                 okLight.flash();   
             }else{
                 faultLight.flash();
             }
         }else{
-            faultLight.flash();
+            okLight.flash();
         }
             
     }
@@ -117,7 +118,6 @@ public class DPoint implements KeyInsertionObserver,
         dPointObserver.disassociateBikeFromUser(bikeId);
         bikeLock.lock();
         this.bikeId = bikeId;
-        this.bikeDocked = Clock.getInstance().getDateAndTime();
         logger.fine(getInstanceName()+" bikeId is : "+this.bikeId);
         okLight.flash();
     }
@@ -125,7 +125,7 @@ public class DPoint implements KeyInsertionObserver,
     @Override
     public void onPress() {
         Date pressed = Clock.getInstance().getDateAndTime();
-        int minutes = Clock.minutesBetween(this.bikeDocked, pressed);
+        int minutes = Clock.minutesBetween(this.bikeUnDocked, pressed);
         if(minutes <= 2){
             this.faultLight.turnOn();
         }

@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class Hub implements AddDStationObserver,
 					        ActionsForBikeAndUserObserver,
-					        AddUserObserver,
-					        ViewActivityObserver {
+					        UserActivitiesObserver
+					         {
     
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
@@ -146,7 +146,7 @@ public class Hub implements AddDStationObserver,
 		newDStation.setRemoveBikeObserver(this);
 		newDStation.setAddBikeObserver(this);
 		newDStation.setAddUserObserver(this);
-		newDStation.setViewActivityObserver(this);
+		newDStation.setUserActivitiesObserver(this);
 
 		// Now connect up DStation to event distributor and collector.
 
@@ -224,12 +224,12 @@ public class Hub implements AddDStationObserver,
         List<String> viewActivity = new ArrayList<String>();
         User usr = findUserByKeyId(keyId);
         if (usr != null){
-            logger.fine("Fetching Trip Information at " + HUBNAME);
+            logger.fine(HUBNAME+"~ Fetching Trip Information...");
             for(Trip tr : usr.getTrips()){
-                viewActivity.add(tr.getDuration());
+                viewActivity.add(tr.getStartTime());
                 viewActivity.add(tr.getStartStation());
                 viewActivity.add(tr.getEndStation());
-                viewActivity.add(tr.getStartTime());
+                viewActivity.add(tr.getDuration());
             }
         }
         return viewActivity;
