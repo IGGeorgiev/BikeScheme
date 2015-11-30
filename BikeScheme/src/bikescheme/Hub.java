@@ -140,6 +140,7 @@ public class Hub implements AddDStationObserver,
 		DStation newDStation = new DStation(instanceName, eastPos, northPos,numPoints);
 		dockingStationMap.put(instanceName, newDStation);
 		newDStation.setRemoveBikeObserver(this);
+		newDStation.setAddBikeObserver(this);
 		newDStation.setAddUserObserver(this);
 		newDStation.setViewActivityObserver(this);
 
@@ -167,25 +168,31 @@ public class Hub implements AddDStationObserver,
     
     @Override
     public void returnBike(String bikeId, String endPoint) {
-        Bike bike = findBikeById(bikeId); 
+        Bike bike = findBikeById(bikeId);
         if(inUse.get(bike)==null){
-            logger.fine(HUBNAME+": bike added by Staff.");
+            logger.fine(HUBNAME+"~ "+bikeId+" added by Staff.");
+            Bike newBike = new Bike(bikeId);
+            bikes.add(newBike);
         }else{
-            logger.fine(HUBNAME+": bike returned by Customer.");
+            logger.fine(HUBNAME+"~ bike returned by Customer.");
             User user = findUserByBikeId(bikeId);
             user.endUsage(Clock.getInstance().getDateAndTime(), endPoint);
             inUse.remove(bike);
         }
+        
     }
     //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========   
     @Override
-    public void addBike(String bikeId, String keyId, String startPoint) {        
+    public boolean addBike(String keyId, String bikeId, String startPoint) {        
+        logger.fine(HUBNAME);
         Bike bike = findBikeById(bikeId);
-        User user = findUserByKeyId(bikeId);
-        //if(user!=null){
+        User user = findUserByKeyId(keyId);
+        boolean shouldContinue = user != null;
+        if(shouldContinue && bike != null){
             inUse.put(bike,user);
             user.startUsage(Clock.getInstance().getDateAndTime(), startPoint);
-        //}
+        }
+        return shouldContinue;
     }
     //=========CODE FOR HANDLING VIEW ACTIVITY USE-CASE=========   
     /**

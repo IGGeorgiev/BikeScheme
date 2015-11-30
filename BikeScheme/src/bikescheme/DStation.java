@@ -67,6 +67,7 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
             DPoint dp = new DPoint(instanceName + "." + i, i - 1);
             dockingPoints.add(dp);
             dp.setDPointObserver(this); 
+            dp.setKeyInsertedObserver(this);
         }
     }
        
@@ -162,10 +163,14 @@ public class DStation implements StartRegObserver, DPointObserver, ViewActivityO
     }
     
     @Override
-    public void associateBikeToUser(String bikeId, String keyId) {
+    public boolean associateBikeToUser(String keyId, String bikeId) {
         logger.fine(getInstanceName());
-        addBikeObserver.addBike(bikeId, keyId, this.getInstanceName());
-        freePoints++;
+        boolean shouldContinue = addBikeObserver.addBike(keyId, bikeId, this.getInstanceName());
+        if(shouldContinue){
+            freePoints++;
+        }
+        return shouldContinue;
+        
     }
     
     //==========CODE FOR HANDLING VIEW ACTIVITY USE CASE=========

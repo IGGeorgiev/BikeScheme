@@ -126,12 +126,23 @@ public class SystemTest {
         logger.info("Starting test: testKeyReaderAndOKLight");
         
         setupDemoSystemConfig();
-        input ("2 09:00, DPoint,    B.2.bs, dockBike, bike-1");//TODO
+        
+        input ("2 09:30, KeyReader, B.2.kr, insertKey, key-2");
+        expect("2 09:30, OKLight,   B.2.ok, flashed");
+
+    }
+    @Test
+    public void testDoubleFlashForRefusedUserKey(){
+        logger.info("Starting test: testDoubleFlashForRefusedUserKey");
+        setupDemoSystemConfig();
+        input ("2 09:00, BikeSensor,B.2.bs, dockBike, bike-2");
+        expect("2 09:00, BikeLock,  B.2.bl, locked");
         expect("2 09:00, OKLight,   B.2.ok, flashed");
         input ("2 09:30, KeyReader, B.2.kr, insertKey, key-2");
         expect("2 09:30, OKLight,   B.2.ok, flashed");
+        expect("2 09:30, OKLight,   B.2.ok, flashed");
+
     }
-    
     
     /*
      * 
