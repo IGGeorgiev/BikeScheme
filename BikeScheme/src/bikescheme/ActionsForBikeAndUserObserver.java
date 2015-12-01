@@ -7,14 +7,7 @@ package bikescheme;
  *
  */
 public interface ActionsForBikeAndUserObserver {
-    public void returnBike(String bikeId, String endPoint);
-    /**
-     * 
-     * @param keyId
-     * @param bikeId
-     * @param startPoint
-     * @return 
-     */
-    public boolean addBike(String keyId, String bikeId, String startPoint);
+    public void returnOrAddBike(String bikeId, String endPoint);
+    public boolean hireOrRemoveBike(String keyId, String bikeId, String startPoint);
     public void reportBikeFaulty(String bikeId);
 }

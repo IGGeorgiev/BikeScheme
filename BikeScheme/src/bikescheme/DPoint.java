@@ -17,17 +17,20 @@ public class DPoint implements KeyInsertionObserver,
                                BikeDockingObserver,
                                FaultButtonObserver{
     public static final Logger logger = Logger.getLogger("bikescheme");
-    private String bikeId;
+    //DEVICES
     private BikeSensor bikeSensor;
     private BikeLock bikeLock;
     private KeyReader keyReader; 
     private OKLight okLight;
     private FaultLight faultLight;
     private FaultButton faultButton;
+    
+    private boolean hasFaultyBike;
+    private String bikeId;
     private String instanceName;
     private int index;
     private Date bikeDocked;
-    private boolean hasFaultyBike;
+
     /**
      * 
      * Construct a Docking Point object with a key reader and green ok light
@@ -42,18 +45,25 @@ public class DPoint implements KeyInsertionObserver,
      // Construct and make connections with interface devices
         keyReader = new KeyReader(instanceName + ".kr");
         keyReader.setObserver(this);
+        
         okLight = new OKLight(instanceName + ".ok");
+        
         bikeLock = new BikeLock(instanceName+".bl");
+        
         bikeSensor = new BikeSensor(instanceName+".bs");
         bikeSensor.setBikeDockingObserver(this);
+        
         faultButton = new FaultButton(instanceName+".fb");
         faultButton.setFaultButtonObserver(this);
+        
         faultLight = new FaultLight(instanceName+".fl");
+        
         bikeId = "";
+        
         this.instanceName = instanceName;
         this.index = index;
         this.bikeDocked = null;
-        hasFaultyBike = false;
+        this.hasFaultyBike = false;
     }
     
     public void setDistributor(EventDistributor d) {

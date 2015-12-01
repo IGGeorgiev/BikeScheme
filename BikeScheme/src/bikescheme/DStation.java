@@ -171,7 +171,7 @@ public class DStation implements StartRegObserver,
     @Override
     public void disassociateBikeFromUser(String bikeId) {
         logger.fine(getInstanceName());
-        removeBikeObserver.returnBike(bikeId, this.getInstanceName());
+        removeBikeObserver.returnOrAddBike(bikeId, this.getInstanceName());
         freePoints--;
     }
     
@@ -184,7 +184,7 @@ public class DStation implements StartRegObserver,
     @Override
     public boolean associateBikeToUser(String keyId, String bikeId) {
         logger.fine(getInstanceName());
-        boolean shouldContinue = bikeActionObserver.addBike(keyId, bikeId, this.getInstanceName());
+        boolean shouldContinue = bikeActionObserver.hireOrRemoveBike(keyId, bikeId, this.getInstanceName());
         if(shouldContinue){
             freePoints++;
         }

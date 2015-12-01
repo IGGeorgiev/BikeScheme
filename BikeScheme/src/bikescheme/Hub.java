@@ -176,7 +176,7 @@ public class Hub implements AddDStationObserver,
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========    
     
     @Override
-    public void returnBike(String bikeId, String endPoint) {
+    public void returnOrAddBike(String bikeId, String endPoint) {
         Bike bike = findBikeById(bikeId);
         if(inUse.get(bike)==null){
             logger.fine(HUBNAME+"~ "+bikeId+" added by Staff.");
@@ -192,7 +192,7 @@ public class Hub implements AddDStationObserver,
     }
     //=========CODE FOR HANDLING HIRE BIKE AND REMOVE BIKE USE-CASES=========   
     @Override
-    public boolean addBike(String keyId, String bikeId, String startPoint) {        
+    public boolean hireOrRemoveBike(String keyId, String bikeId, String startPoint) {        
         logger.fine(HUBNAME);
         Bike bike = findBikeById(bikeId);
         User user = findUserByKeyId(keyId);

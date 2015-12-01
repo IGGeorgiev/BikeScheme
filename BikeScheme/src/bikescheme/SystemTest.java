@@ -73,8 +73,29 @@ public class SystemTest {
              + "     B,  400,   300,    LOW,         0,        3");
         input ("3 00:01, DSTouchScreen, A.ts, viewActivity");
         expect("3 00:01, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
-        input ("3 00:02, KeyReader    , A.kr, keyInsertion, B.ki-1");
-        expect("3 00:02, DSTouchScreen, A.ts, viewUserActivity, ordered-tuples, 4 ," 
+        input ("3 00:01, KeyReader    , A.kr, keyInsertion, B.ki-1");
+        expect("3 00:01, DSTouchScreen, A.ts, viewUserActivity, ordered-tuples, 4 ," 
+                + "HireTime, HireDS, ReturnDS, Duration (min),"
+                );
+        input("3 23:30, KeyReader, A.2.kr, insertKey, B.ki-1");
+        expect("3 23:30, BikeLock, A.2.bl, unlocked");
+        expect("3 23:30, OKLight, A.2.ok, flashed");
+        
+        input("3 23:55, BikeSensor, A.2.bs, dockBike, bike-1");
+        expect("3 23:55, BikeLock, A.2.bl, locked");
+        expect("3 23:55, OKLight, A.2.ok, flashed");
+        
+        input("4 00:00, Clock, clk, tick");
+        
+        expect("4 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
+                + "DSName, East, North, Status, #Occupied, #DPoints,"
+                + "     A,    0,     0,     OK,         4,        5," 
+                + "     B,  400,   300,    LOW,         0,        3");
+        
+        input ("4 00:01, DSTouchScreen, A.ts, viewActivity");
+        expect("4 00:01, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
+        input ("4 00:01, KeyReader    , A.kr, keyInsertion, B.ki-1");
+        expect("4 00:01, DSTouchScreen, A.ts, viewUserActivity, ordered-tuples, 4 ," 
                 + "HireTime, HireDS, ReturnDS, Duration (min),"
                 );
         
