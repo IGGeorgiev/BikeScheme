@@ -107,7 +107,7 @@ public class HubTerminal extends AbstractIODevice {
        List<String> messageArgs = new ArrayList<String>();
        String[] preludeArgs = 
            {"unordered-tuples","4",
-            "#Journeys", "#Users","Total Distance Travelled","Average Journey Time"};
+            "#Trips", "#Users","Total Distance Travelled (m)","Average Journey Time (min)"};
        messageArgs.addAll(Arrays.asList(preludeArgs));
        messageArgs.addAll(stats);
        
