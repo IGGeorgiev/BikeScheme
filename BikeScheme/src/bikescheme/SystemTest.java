@@ -65,6 +65,16 @@ public class SystemTest {
         expect("2 23:59, DSTouchScreen, A.ts, viewUserActivity, ordered-tuples, 4 ," 
                 + "HireTime, HireDS, ReturnDS, Duration (min),"
                 + "23:30   ,   B   ,    A    ,        25     ");
+        input("2 00:00, Clock, clk, tick");
+        expect("2 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
+             + "DSName, East, North, Status, #Occupied, #DPoints,"
+             + "     A,    0,     0,     OK,         4,        5," 
+             + "     B,  400,   300,    LOW,         0,        3");
+        input ("3 00:01, DSTouchScreen, A.ts, viewActivity");
+        expect("3 00:01, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
+        input ("3 00:01, KeyReader    , A.kr, keyInsertion, B.ki-1");
+        expect("3 00:01, DSTouchScreen, A.ts, viewUserActivity, ordered-tuples, 4 ," 
+                + "HireTime, HireDS, ReturnDS, Duration (min)");
         
        // setupBikeConfig
     }
