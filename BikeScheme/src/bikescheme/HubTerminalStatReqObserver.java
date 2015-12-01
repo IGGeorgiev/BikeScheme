@@ -1,6 +1,8 @@
 package bikescheme;
 
+import java.util.List;
+
 public interface HubTerminalStatReqObserver {
-    public void populateFaultyDStationList();
-    public void populateStatsList();
+    public List<String> populateFaultyDStationList();
+    public List<String> populateStatsList();
 }

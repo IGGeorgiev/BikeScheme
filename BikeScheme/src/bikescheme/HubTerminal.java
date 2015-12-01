@@ -62,12 +62,12 @@ public class HubTerminal extends AbstractIODevice {
         } else if (e.getMessageName().equals("showStats")
                 && e.getMessageArgs().size() == 0){
             
-            htsro.populateStatsList();
+            showStats(htsro.populateStatsList());
             
         } else if ((e.getMessageName().equals("showFaulty")
                 && e.getMessageArgs().size() == 0)){
             
-            htfbo.populateFaultyDStationList();
+            showFaulty(htfbo.populateFaultyDStationList());
             
         }else{    
             super.receiveEvent(e);

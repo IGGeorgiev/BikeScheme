@@ -74,7 +74,8 @@ public class SystemTest {
         expect("3 00:01, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
         input ("3 00:01, KeyReader    , A.kr, keyInsertion, B.ki-1");
         expect("3 00:01, DSTouchScreen, A.ts, viewUserActivity, ordered-tuples, 4 ," 
-                + "HireTime, HireDS, ReturnDS, Duration (min)");
+                + "HireTime, HireDS, ReturnDS, Duration (min),"
+                + "23:30,B,A,25");
         
        // setupBikeConfig
     }
@@ -146,6 +147,39 @@ public class SystemTest {
         		"B, 400, 300");
     }
     
+    @Test
+    public void testViewFaultyStations(){
+        logger.info("Starting test: testViewFaultyStations");
+        setupDemoSystemConfig();
+        
+        setupABikeConfig("B.2","bike-1");
+        setupABikeConfig("A.1","bike-2");
+        setupABikeConfig("A.2","bike-3");
+        setupABikeConfig("A.3","bike-4");
+        
+        setupAUserConfig("Tim","B",1);
+        
+        input ("2 23:30, KeyReader, B.2.kr, insertKey, B.ki-1");
+        expect("2 23:30, BikeLock, B.2.bl, unlocked");
+        expect("2 23:30, OKLight, B.2.ok, flashed");
+        
+        input ("2 23:55, BikeSensor, A.4.bs, dockBike, bike-1");
+        expect("2 23:55, BikeLock, A.4.bl, locked");
+        expect("2 23:55, OKLight, A.4.ok, flashed");
+        
+        input ("2 23:56, FaultButton, A.4.fb, pressed");
+        expect("2 23:56, FaultLight,  A.4.fl, turnedOn");
+        
+        input("2 23:57, HubTerminal, ht, showFaulty");
+        expect("2 23:57, HubTerminal, ht, showFaulty, unordered-tuples, 3,"+ 
+               "DStation, East, North,"+
+               "       A,    0,     0");
+        input("2 23:57, HubTerminal, ht, showStats");
+        expect("2 23:57, HubTerminal, ht, showStats, unordered-tuples, 4, "+
+               "#Trips, #Users, Total Distance Travelled (m), Average Journey Time (min),"+ 
+               "     1,      1,                       500.00,                      25.00");
+
+    }
     /**
      * 
      * Setup demonstration system configuration:
