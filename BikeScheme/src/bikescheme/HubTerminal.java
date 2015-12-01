@@ -40,7 +40,10 @@ public class HubTerminal extends AbstractIODevice {
     public void setFaultObserver(HubTerminalStatReqObserver o){
         htfbo = o;
     }
-    
+    private KeyIssueRequestObserver kiro;
+    public void setKeyIssueRequestObserver(KeyIssueRequestObserver o){
+        kiro = o;
+    }
     /** 
      *    Select device action based on input event message
      *    
@@ -69,6 +72,11 @@ public class HubTerminal extends AbstractIODevice {
             
             showFaulty(htfbo.populateFaultyDStationList());
             
+        }else if (e.getMessageName().equals("issueKey")
+                && e.getMessageArgs().size() == 0){
+            
+            kiro.requestKeyIssued();
+            
         }else{    
             super.receiveEvent(e);
         } 
@@ -90,6 +98,7 @@ public class HubTerminal extends AbstractIODevice {
     
     // Insert here support for operations generating output on the 
     // touch screen display.
+    
     
     
   /**

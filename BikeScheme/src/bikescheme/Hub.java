@@ -23,7 +23,8 @@ public class Hub implements AddDStationObserver,
 					        ActionsForBikeAndUserObserver,
 					        UserActivitiesObserver,
 					        HubTerminalStatReqObserver,
-					        BankingServerInterface {
+					        BankingServerInterface,
+					        KeyIssueRequestObserver{
     
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
@@ -56,12 +57,13 @@ public class Hub implements AddDStationObserver,
 		terminal.setObserver(this);
 		terminal.setStatObserver(this);
 		terminal.setFaultObserver(this);
+		terminal.setKeyIssueRequestObserver(this);
 		display = new HubDisplay("hd");
 		dockingStationMap = new HashMap<String, DStation>();
 		bikes = new ArrayList<Bike>();
 	    users = new ArrayList<User>();
 	    inUse = new HashMap<Bike,User>();
-	    keyIssuer = new KeyIssuer(HUBNAME);
+	    keyIssuer = new KeyIssuer(HUBNAME+".ki");
 	    staffIds = new ArrayList<String>();
 		// Schedule timed notification for generating updates of
 		// hub display.
@@ -137,6 +139,7 @@ public class Hub implements AddDStationObserver,
 		display.setCollector(c);
 		terminal.setCollector(c);
 		bankingServer.setCollector(c);
+		keyIssuer.setCollector(c);
 	}
 
 	/**
@@ -207,8 +210,7 @@ public class Hub implements AddDStationObserver,
             bikes.remove(bike);
             logger.fine(HUBNAME+"~ bike is removed");
 
-        }
-        if(shouldContinue && bike != null){
+        }else if(shouldContinue && bike != null){
             inUse.put(bike,user);
             logger.fine(HUBNAME+"~ bike is hired");
             user.startUsage(Clock.getInstance().getDateAndTime(), startPoint);
@@ -421,6 +423,12 @@ public class Hub implements AddDStationObserver,
       //Applies charges to the given card authentication number relative
       //to the user's personal details
         bankingServer.applyCharges(charge, personalDetails, cardAuthenticationNumber);
+    }
+
+    @Override
+    public void requestKeyIssued() {
+        // TODO Auto-generated method stub
+        staffIds.add(this.keyIssuer.issueKey());
     }
 
     

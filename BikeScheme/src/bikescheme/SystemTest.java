@@ -212,6 +212,20 @@ public class SystemTest {
                "     1,      1,                       500.00,                      25.00");
 
     }
+    @Test
+    public void testAddAndRemoveBikeAndAddStaffKey(){
+        logger.info("Starting test: testAddAndRemoveBike");
+        setupDemoSystemConfig();
+        
+        setupABikeConfig("A.2", "bike-1");
+        
+        input ("2 09:06, HubTerminal, ht, issueKey");
+        expect("2 09:06, KeyIssuer, CyclOps.Hub.ki, keyIssued, CyclOps.Hub.ki-1");
+        
+        input ("2 09:07, KeyReader, A.2.kr, insertKey, CyclOps.Hub.ki-1");
+        expect("2 09:07, BikeLock, A.2.bl, unlocked");
+        expect("2 09:07, OKLight, A.2.ok, flashed");
+    }
     /**
      * 
      * Setup demonstration system configuration:
