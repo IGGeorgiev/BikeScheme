@@ -66,7 +66,7 @@ public class SystemTest {
                 + "HireTime, HireDS, ReturnDS, Duration (min),"
                 + "23:30   ,   B   ,    A    ,        25     ");
         input("3 00:00, Clock, clk, tick");
-        expect("3 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
+        expect("3 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,");
         input("3 00:00, Clock, clk, tick");
         //CLEARING OCCURS HERE
         expect("3 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
