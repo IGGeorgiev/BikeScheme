@@ -111,9 +111,9 @@ public class Hub implements AddDStationObserver,
 		                        //Calculates each user's applied charges
 		                        charge += tr.getPrice();
 		                    }
-		                    
-		                    applyCharges(charge, u.getPersonalDetails(), u.getCardDetails());
-		                    
+		                    if(charge != 0){
+		                        applyCharges(charge, u.getPersonalDetails(), u.getCardDetails());
+		                    } 
 		                    u.clearTrips();
 		                }
 		            }
