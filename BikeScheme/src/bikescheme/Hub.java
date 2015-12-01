@@ -111,14 +111,15 @@ public class Hub implements AddDStationObserver,
 		                        //Calculates each user's applied charges
 		                        charge += tr.getPrice();
 		                    }
-		                    if(charge != 0){
-		                        applyCharges(charge, u.getPersonalDetails(), u.getCardDetails());
-		                    } 
+		                    //if(charge != 0){
+		                    //    applyCharges(charge, u.getPersonalDetails(), u.getCardDetails());
+		                    //} 
 		                    u.clearTrips();
 		                }
+		                logger.fine("CLEARING COMPLETE");
 		            }
 		            
-		        }, Clock.getStartDate(), 24, 0);
+		        }, Clock.getStartDate(), 24, 00);
 	}
 
 	public void setDistributor(EventDistributor d) {
@@ -169,6 +170,7 @@ public class Hub implements AddDStationObserver,
         logger.fine("Recording user : "+personalDetails+" with key : "+keyId+" in " + HUBNAME);
         User user = new User(keyId,personalDetails,cardDetails);
         users.add(user);
+        //logger.fine(""+users.get(users.size()-1).getKeyId()+"IS IN");
         return true;
     }
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========    
@@ -253,7 +255,6 @@ public class Hub implements AddDStationObserver,
     //=========CODE FOR HANDLING VIEW FREE STATIONS USE-CASE=========
     @Override
     public List<String> sendFreeStations() {
-        // TODO Auto-generated method stub
         List<String> freePoints = new ArrayList<String>();
         for(String s : dockingStationMap.keySet()){
             if(dockingStationMap.get(s).getFreePoints() > 0){

@@ -67,6 +67,9 @@ public class SystemTest {
                 + "23:30   ,   B   ,    A    ,        25     ");
         input("3 00:00, Clock, clk, tick");
         expect("3 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
+        input("3 00:00, Clock, clk, tick");
+        //CLEARING OCCURS HERE
+        expect("3 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
              + "DSName, East, North, Status, #Occupied, #DPoints,"
              + "     A,    0,     0,     OK,         4,        5," 
              + "     B,  400,   300,    LOW,         0,        3");

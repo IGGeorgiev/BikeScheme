@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * 
@@ -77,6 +78,9 @@ public class Clock extends AbstractInputDevice {
     private Date dateAndTime;
    
     static {  
+        
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        
         dateFormat = new SimpleDateFormat("d HH:mm");
 
         startDate = new Date(0L); // 1 Jan 1970, 00:00
