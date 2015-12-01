@@ -421,7 +421,7 @@ public class Hub implements AddDStationObserver,
     public void applyCharges(int charge, String personalDetails, String cardAuthenticationNumber){
       //Applies charges to the given card authentication number relative
       //to the user's personal details
-        bsi.applyCharges(charge, personalDetails, cardAuthenticationNumber);
+        //bsi.applyCharges(charge, personalDetails, cardAuthenticationNumber);
     }
 
     

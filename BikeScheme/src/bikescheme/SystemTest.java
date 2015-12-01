@@ -74,8 +74,7 @@ public class SystemTest {
         expect("3 00:01, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
         input ("3 00:01, KeyReader    , A.kr, keyInsertion, B.ki-1");
         expect("3 00:01, DSTouchScreen, A.ts, viewUserActivity, ordered-tuples, 4 ," 
-                + "HireTime, HireDS, ReturnDS, Duration (min),"
-                + "23:30,B,A,25");
+                + "HireTime, HireDS, ReturnDS, Duration (min),");
         
        // setupBikeConfig
     }
