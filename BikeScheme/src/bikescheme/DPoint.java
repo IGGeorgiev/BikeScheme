@@ -26,7 +26,6 @@ public class DPoint implements KeyInsertionObserver,
     private FaultButton faultButton;
     private String instanceName;
     private int index;
-    private Date bikeUnDocked;
     private Date bikeDocked;
     
     /**
@@ -53,7 +52,6 @@ public class DPoint implements KeyInsertionObserver,
         bikeId = "";
         this.instanceName = instanceName;
         this.index = index;
-        this.bikeUnDocked = null;
         this.bikeDocked = null;
     }
     
@@ -95,7 +93,6 @@ public class DPoint implements KeyInsertionObserver,
             boolean shouldContinue = keyInserted.associateBikeToUser(keyId, this.bikeId);
             if(shouldContinue){
                 bikeLock.unlock();
-                this.bikeUnDocked = Clock.getInstance().getDateAndTime();
                 bikeId = "";
                 okLight.flash();   
             }else{
@@ -104,6 +101,7 @@ public class DPoint implements KeyInsertionObserver,
         }else{
             okLight.flash();
         }
+        
             
     }
     //=========CODE FOR HANDLING RETURN BIKE AND ADD BIKE USE-CASE=========
