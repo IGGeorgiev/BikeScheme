@@ -16,7 +16,8 @@ import java.util.logging.Logger;
  */
 public class DStation implements StartRegObserver,  
                                  DPointObserver,
-                                 ViewActivityObserver
+                                 ViewActivityObserver,
+                                 ViewFreeDockingStationsObserver
                                  /*,KeyInsertionObserver*/ {
     public static final Logger logger = Logger.getLogger("bikescheme");
 
@@ -58,6 +59,7 @@ public class DStation implements StartRegObserver,
         touchScreen = new DSTouchScreen(instanceName + ".ts");
         touchScreen.setStartRegObserver(this);
         touchScreen.setViewActivityObserver(this);
+        touchScreen.setViewFreeDockingStationsObserver(this);
         
         cardReader = new CardReader(instanceName + ".cr");
         
@@ -165,7 +167,6 @@ public class DStation implements StartRegObserver,
         logger.fine(getInstanceName());
         removeBikeObserver.returnBike(bikeId, this.getInstanceName());
         freePoints--;
-        //TODO add code for occupancy checking here
     }
     
     //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========
@@ -191,11 +192,7 @@ public class DStation implements StartRegObserver,
         bikeActionObserver.reportBikeFaulty(bikeId);
     }
     //==========CODE FOR HANDLING VIEW ACTIVITY USE CASE=========
-    /* @Override
-    public void keyInserted(String keyId) {
-        // TODO Auto-generated method stub
-        
-    }*/
+   
     private UserActivitiesObserver viewActivityObserver;
     
     public void setUserActivitiesObserver(UserActivitiesObserver o){
@@ -210,6 +207,17 @@ public class DStation implements StartRegObserver,
         String keyId = this.keyReader.waitForKeyInsertion();
         logger.fine(getInstanceName());
         this.touchScreen.showUserActivity(viewActivityObserver.viewActivityReceived(keyId));
+    }
+    //==========CODE FOR HANDLING VIEW FREE STATIONS USE CASE=========
+    private UserActivitiesObserver requestFreeStations;
+    public void setRequestFreeStationsObserver(UserActivitiesObserver o){
+        this.requestFreeStations = o;
+    }
+    @Override
+    public List<String> requestFreeStations() {
+        logger.fine(getInstanceName());
+
+        return requestFreeStations.sendFreeStations();
     }
 
     

@@ -124,6 +124,18 @@ public class SystemTest {
         input ("2 23:56, FaultButton, A.4.fb, pressed");
         expect("2 23:56, FaultLight,  A.4.fl, turnedOn");
     }
+    @Test
+    public void testViewFreeStations(){
+        logger.info("Starting test: testFaultButtonAndFaultLight");
+        setupDemoSystemConfig();
+        
+        input ("2 10:00, DSTouchScreen, A.ts, showFreeDockingStations");
+        expect("2 10:00, DSTouchScreen, A.ts, viewFreeDockingStations, ordered-tuples, 3," +
+        		"DSName, EastPos, NorthPos," +
+                "A, 0, 0,"+
+        		"B, 400, 300");
+    }
+    
     /**
      * 
      * Setup demonstration system configuration:

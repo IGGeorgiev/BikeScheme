@@ -100,11 +100,8 @@ public class Hub implements AddDStationObserver,
 		                logger.fine("");
 		                
 		                for (User u : users){
-		                    
 		                    // User billing should be done here
-
-                            int charge = 0;
-		                    
+		                    int charge = 0;
 		                    for(Trip tr : u.getTrips()){
 		                        
 		                        //Calculates each user's applied charges
@@ -147,6 +144,7 @@ public class Hub implements AddDStationObserver,
 		newDStation.setAddBikeObserver(this);
 		newDStation.setAddUserObserver(this);
 		newDStation.setUserActivitiesObserver(this);
+		newDStation.setRequestFreeStationsObserver(this);
 
 		// Now connect up DStation to event distributor and collector.
 
@@ -187,7 +185,7 @@ public class Hub implements AddDStationObserver,
         
     }
     //=========CODE FOR HANDLING HIRE BIKE AND REMOVE BIKE USE-CASES=========   
-    @Override//TODO
+    @Override
     public boolean addBike(String keyId, String bikeId, String startPoint) {        
         logger.fine(HUBNAME);
         Bike bike = findBikeById(bikeId);
@@ -247,6 +245,20 @@ public class Hub implements AddDStationObserver,
         if(bike != null){
             bike.setFaulty(true);
         }
+    }
+    //=========CODE FOR HANDLING VIEW FREE STATIONS USE-CASE=========
+    @Override
+    public List<String> sendFreeStations() {
+        // TODO Auto-generated method stub
+        List<String> freePoints = new ArrayList<String>();
+        for(String s : dockingStationMap.keySet()){
+            if(dockingStationMap.get(s).getFreePoints() > 0){
+                freePoints.add(s);
+                freePoints.add(String.format("%d", dockingStationMap.get(s).getEastPos()));
+                freePoints.add(String.format("%d", dockingStationMap.get(s).getNorthPos()));
+            }
+        }
+        return freePoints;
     }
     //=======================HELPER FUNCTIONS ==============================
     /**
@@ -349,6 +361,10 @@ public class Hub implements AddDStationObserver,
     public void applyCharges(int charge, String personalDetails, String cardAuthenticationNumber){
         //Applies charges to the given card authentication number relative to the user's personal details
     }
+
+    
+
+    
 
     
 }

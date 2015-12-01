@@ -11,10 +11,6 @@ import java.util.List;
  * DSTouchScreen IO devices.
  * 
  * @author pbj
- *
- * This interface was modified to serve as a two way transaction
- * for the DSTouchScreen -> DStation -> Hub and its inverse
- * to simplify the request to a single function
  * 
  */
 public interface ViewActivityObserver {

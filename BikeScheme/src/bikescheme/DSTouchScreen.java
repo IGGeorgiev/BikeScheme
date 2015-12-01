@@ -44,7 +44,12 @@ public class DSTouchScreen extends AbstractIODevice {
                 
             viewActivity();
                 
-        } else {
+        } else if (e.getMessageName().equals("showFreeDockingStations") 
+                && e.getMessageArgs().size() == 0) {
+        
+            showFreeDockingStations(requestFreeStations());
+            
+        }  else {
             super.receiveEvent(e);
         } 
     }
@@ -96,13 +101,24 @@ public class DSTouchScreen extends AbstractIODevice {
 
         viewActivityObserver.viewActivityReceived();
     }
+    /*
+     * SUPPORT FOR viewFreeStations TRIGGERING INPUT MESSAGE
+     */
+    
+    private ViewFreeDockingStationsObserver viewFreeDockingStationsObserver;
+    public void setViewFreeDockingStationsObserver(ViewFreeDockingStationsObserver o){
+        viewFreeDockingStationsObserver = o;
+    }
+    public List<String> requestFreeStations(){
+        return viewFreeDockingStationsObserver.requestFreeStations();
+    } 
+
     
     /* 
      * 
      * SUPPORT FOR showPrompt OUTPUT MESSAGE
      * 
      */
-
     public void showPrompt(String prompt) {
         logger.fine(getInstanceName());
         
@@ -126,7 +142,7 @@ public class DSTouchScreen extends AbstractIODevice {
 
     /* 
      * 
-     * SUPPORT FOR showPrompt OUTPUT MESSAGE
+     * SUPPORT FOR viewUserActivity INPUT MESSAGE
      * 
      */
 
@@ -152,6 +168,32 @@ public class DSTouchScreen extends AbstractIODevice {
                 messageName,
                 messageArgs));
        
+    }
+    /* 
+     * 
+     * SUPPORT FOR showFreeStations INPUT MESSAGE
+     * 
+     */
+    public void showFreeDockingStations(List<String> freePoints){
+        logger.fine(getInstanceName());
+        String deviceClass = "DSTouchScreen";
+        String deviceInstance = getInstanceName();
+        String messageName = "viewFreeDockingStations";
+        List<String> messageArgs = new ArrayList<String>();
+        
+        String[] preludeArgs = 
+            {"ordered-tuples","3",
+             "DSName","EastPos","NorthPos"}; 
+        messageArgs.addAll(Arrays.asList(preludeArgs));
+        messageArgs.addAll(freePoints);
+        
+        super.sendEvent(
+            new Event(
+                Clock.getInstance().getDateAndTime(), 
+                deviceClass,
+                deviceInstance,
+                messageName,
+                messageArgs));
     }
 
      
