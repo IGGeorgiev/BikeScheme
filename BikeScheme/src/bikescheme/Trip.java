@@ -24,7 +24,7 @@ public class Trip {
     public Trip(Date startDate, Date endDate){
         this.startTime = startDate.toString().substring(11,16);
         this.duration = Clock.minutesBetween(startDate, endDate);
-        if (duration % 30 == 0) this.price = 1;
+        if (duration < 30) this.price = 1;
         else this.price = 1 + (duration % 30)*2;
     }
     

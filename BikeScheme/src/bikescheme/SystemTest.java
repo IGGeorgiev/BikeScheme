@@ -72,6 +72,8 @@ public class SystemTest {
              + "     B,  400,   300,    LOW,         0,        3,"
              + "     A,    0,     0,     OK,         4,        5" 
              );
+
+        expect("3 00:00, BankServer, BankServer, applyCharges, Charged!");
         input ("3 00:01, DSTouchScreen, A.ts, viewActivity");
         expect("3 00:01, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
         input ("3 00:01, KeyReader    , A.kr, keyInsertion, B.ki-1");

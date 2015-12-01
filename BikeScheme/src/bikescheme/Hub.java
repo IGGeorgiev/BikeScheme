@@ -113,15 +113,15 @@ public class Hub implements AddDStationObserver,
 		                        //Calculates each user's applied charges
 		                        charge += tr.getPrice();
 		                    }
-		                    //if(charge != 0){
-		                    applyCharges(charge, u.getPersonalDetails(), u.getCardDetails());
-		                    //} 
-		                    u.clearTrips();
+		                    if(charge != 0){
+		                        applyCharges(charge, u.getPersonalDetails(), u.getCardDetails());
+		                        u.clearTrips();
+		                    }
 		                }
 		                logger.fine("CLEARING COMPLETE");
 		            }
-		            
-		        }, Clock.getStartDate(), 24, 00);
+		        }, Clock.getStartDate(), 24, 0);
+		
 	}
 
 	public void setDistributor(EventDistributor d) {
@@ -136,6 +136,7 @@ public class Hub implements AddDStationObserver,
 	public void setCollector(EventCollector c) {
 		display.setCollector(c);
 		terminal.setCollector(c);
+		bankingServer.setCollector(c);
 	}
 
 	/**
