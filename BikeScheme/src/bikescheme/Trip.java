@@ -22,7 +22,7 @@ public class Trip {
     private String startTime;
     
     public Trip(Date startDate, Date endDate){
-        this.startTime = startDate.toString();
+        this.startTime = startDate.toString().substring(11,16);
         this.duration = Clock.minutesBetween(startDate, endDate);
         if (duration % 30 == 0) this.price = 1;
         else this.price = 1 + (duration % 30)*2;

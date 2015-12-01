@@ -62,7 +62,7 @@ public class SystemTest {
         input ("2 23:58, DSTouchScreen, A.ts, viewActivity");
         expect("2 23:58, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
         input ("2 23:59, KeyReader    , A.kr, keyInsertion, B.ki-1");
-        expect("2 23:59, DSTouchScreen, A.ts, viewUserActivity, unordered-tuples, 4 ," 
+        expect("2 23:59, DSTouchScreen, A.ts, viewUserActivity, ordered-tuples, 4 ," 
                 + "HireTime, HireDS, ReturnDS, Duration (min),"
                 + "23:30   ,   B   ,    A    ,        25     ");
         
