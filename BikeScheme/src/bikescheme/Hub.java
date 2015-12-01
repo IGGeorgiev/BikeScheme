@@ -412,8 +412,16 @@ public class Hub implements AddDStationObserver,
     }
     //======================POSSIBLE CONNECTION TO BANKING SERVER======================
     
+    private BankingServerInterface bsi;
+    
+    public void setBankingServerInterface(BankingServerInterface o){
+        bsi = o;
+    }
+    
     public void applyCharges(int charge, String personalDetails, String cardAuthenticationNumber){
-        //Applies charges to the given card authentication number relative to the user's personal details
+      //Applies charges to the given card authentication number relative
+      //to the user's personal details
+        bsi.applyCharges(charge, personalDetails, cardAuthenticationNumber);
     }
 
     
