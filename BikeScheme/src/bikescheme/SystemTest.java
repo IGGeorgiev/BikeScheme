@@ -66,6 +66,8 @@ public class SystemTest {
                 + "HireTime, HireDS, ReturnDS, Duration (min),"
                 + "23:30   ,   B   ,    A    ,        25     ");
         input("3 00:00, Clock, clk, tick");
+        expect("3 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,");
+        input("3 00:00, Clock, clk, tick");
         //CLEARING OCCURS HERE
         expect("3 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
              + "DSName, East, North, Status, #Occupied, #DPoints,"
@@ -99,6 +101,12 @@ public class SystemTest {
                 + "HireTime, HireDS, ReturnDS, Duration (min),"
                 );
         
+        input ("3 00:10, DSTouchScreen, A.ts, viewActivity");
+        expect("3 00:10, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
+        input ("3 00:10, KeyReader    , A.kr, keyInsertion, B.ki-1");
+        expect("3 00:10, DSTouchScreen, A.ts, viewUserActivity, ordered-tuples, 4 ," 
+                + "HireTime, HireDS, ReturnDS, Duration (min)");
+
        // setupBikeConfig
     }
     
@@ -202,7 +210,6 @@ public class SystemTest {
                "     1,      1,                       500.00,                      25.00");
 
     }
-   
     /**
      * 
      * Setup demonstration system configuration:
