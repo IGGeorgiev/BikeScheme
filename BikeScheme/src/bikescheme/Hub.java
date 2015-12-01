@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class Hub implements AddDStationObserver,
 					        ActionsForBikeAndUserObserver,
-					        UserActivitiesObserver
-					         {
+					        UserActivitiesObserver,
+					        HubTerminalStatReqObserver {
     
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
@@ -46,10 +46,13 @@ public class Hub implements AddDStationObserver,
 	 * 
 	 * @param instanceName
 	 */
+	
 	public Hub() {
 		// Construct and make connections with interface devices
 		terminal = new HubTerminal("ht");
 		terminal.setObserver(this);
+		terminal.setStatObserver(this);
+		terminal.setFaultObserver(this);
 		display = new HubDisplay("hd");
 		dockingStationMap = new HashMap<String, DStation>();
 		bikes = new ArrayList<Bike>();
