@@ -39,8 +39,8 @@ public class SystemTest {
      * 
      */
     @Test
-    public void viewActivity(){
-        logger.info("Start viewActivity test:");
+    public void fullSystemTest(){
+        logger.info("Start fullSystemTest test:");
         setupDemoSystemConfig();
         
         setupABikeConfig("B.2","bike-1");
