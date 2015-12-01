@@ -40,6 +40,9 @@ public class Trip {
         return Integer.toString(duration);
     }
     
+    public int getDurationInt(){
+        return this.duration;
+    }
     public void setStartStation(String s){
         this.startStation = s;
     }

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.ArrayList;
 
+
 /**
  * 
  * Hub system.
@@ -355,7 +356,57 @@ public class Hub implements AddDStationObserver,
         //FINALLY RETURN THE POPULATED ARRAY
         return occupancyList;
     }
-    
+    /**
+     * 
+     * Populates a list of faulty DStations of the form
+     * #DName,#EastPos,#NorthPos
+     *
+     */
+    public List<String> populateFaultyDStationList(){
+        List<String> faultyStations = new ArrayList<String>();
+        for(String s : dockingStationMap.keySet()){
+            if(dockingStationMap.get(s).hasFaultyBikes()){
+               faultyStations.add(s);
+               faultyStations.add(String.format("%d", dockingStationMap.get(s).getEastPos()));
+               faultyStations.add(String.format("%d", dockingStationMap.get(s).getNorthPos()));
+            }
+        }
+        return faultyStations;
+    }
+    /**
+     * 
+     * Populates a list of stats of the form
+     * #numberOfTrips,#numberOfUsers,#distanceTraveled,#averageTripTime
+     *
+     */
+    public List<String> populateStatsList(){
+        List<String> statsList = new ArrayList<String>();
+        int numberOfTrips = 0;
+        int numberOfUsers = this.users.size();
+        double distanceTraveled = 0;
+        int totalTripTimeMins = 0;
+        for(User usr : users){
+            for(Trip trip: usr.getTrips()){
+                numberOfTrips++;
+                DStation start = dockingStationMap.get(trip.getStartStation());
+                DStation end   = dockingStationMap.get(trip.getEndStation());
+                distanceTraveled+=distance(start.getEastPos(),start.getNorthPos(),
+                                           end.getEastPos()  ,end.getNorthPos());
+                totalTripTimeMins+=trip.getDurationInt();
+            }
+        }
+        double averageTripTime = (double)totalTripTimeMins/numberOfTrips;
+        statsList.add(String.format("%d", numberOfTrips));
+        statsList.add(String.format("%d", numberOfUsers));
+        statsList.add(String.format("%.2f", distanceTraveled));
+        statsList.add(String.format("%.2f", averageTripTime));
+
+       
+        return statsList;
+    }
+    public double distance(int x,int y,int x1,int y1){
+        return Math.sqrt((double)(x-x1)*(x-x1)+(y-y1)*(y-y1));
+    }
     //======================POSSIBLE CONNECTION TO BANKING SERVER======================
     
     public void applyCharges(int charge, String personalDetails, String cardAuthenticationNumber){

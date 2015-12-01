@@ -148,6 +148,12 @@ public class DStation implements StartRegObserver,
         else{return "OK";}
         
     }
+    public boolean hasFaultyBikes(){
+        for(DPoint dPoint : dockingPoints){
+            if(dPoint.hasFaultyBike())return true;
+        }
+        return false;
+    }
     //======================HANDLES ADD USER REQUESTS=========================
     
     private UserActivitiesObserver addUserObserver;

@@ -27,7 +27,7 @@ public class DPoint implements KeyInsertionObserver,
     private String instanceName;
     private int index;
     private Date bikeDocked;
-    
+    private boolean hasFaultyBike;
     /**
      * 
      * Construct a Docking Point object with a key reader and green ok light
@@ -53,6 +53,7 @@ public class DPoint implements KeyInsertionObserver,
         this.instanceName = instanceName;
         this.index = index;
         this.bikeDocked = null;
+        hasFaultyBike = false;
     }
     
     public void setDistributor(EventDistributor d) {
@@ -74,6 +75,9 @@ public class DPoint implements KeyInsertionObserver,
     public int getIndex() {
         return index;
     }
+    public boolean hasFaultyBike(){
+        return this.hasFaultyBike;
+    }
    //=========CODE FOR HANDLING HIRE BIKE USE-CASE=========
    private DPointObserver keyInserted;
    public void setKeyInsertedObserver(DPointObserver o){
@@ -91,10 +95,11 @@ public class DPoint implements KeyInsertionObserver,
         logger.fine(getInstanceName());
         if(!bikeId.equals("")&& !faultLight.isOn()){
             boolean shouldContinue = keyInserted.associateBikeToUser(keyId, this.bikeId);
-            if(shouldContinue){
+            if(shouldContinue && (!hasFaultyBike || keyId.substring(0, 12).equals("CycleOps.Hub"))){
                 bikeLock.unlock();
                 bikeId = "";
-                okLight.flash();   
+                okLight.flash();
+                hasFaultyBike = false;
             }else{
                 faultLight.flash();
             }
@@ -129,8 +134,10 @@ public class DPoint implements KeyInsertionObserver,
         int minutes = Clock.minutesBetween(this.bikeDocked, pressed);
         if(minutes <= 2){
             this.faultLight.turnOn();
+            this.hasFaultyBike = true;
+            dPointObserver.reportBikeFaulty(this.bikeId);
         }
-        dPointObserver.reportBikeFaulty(this.bikeId);
     }
+    
  
 }
