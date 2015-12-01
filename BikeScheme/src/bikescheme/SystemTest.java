@@ -66,13 +66,12 @@ public class SystemTest {
                 + "HireTime, HireDS, ReturnDS, Duration (min),"
                 + "23:30   ,   B   ,    A    ,        25     ");
         input("3 00:00, Clock, clk, tick");
-        expect("3 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,");
-        input("3 00:00, Clock, clk, tick");
         //CLEARING OCCURS HERE
         expect("3 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
              + "DSName, East, North, Status, #Occupied, #DPoints,"
-             + "     A,    0,     0,     OK,         4,        5," 
-             + "     B,  400,   300,    LOW,         0,        3");
+             + "     B,  400,   300,    LOW,         0,        3,"
+             + "     A,    0,     0,     OK,         4,        5" 
+             );
         input ("3 00:01, DSTouchScreen, A.ts, viewActivity");
         expect("3 00:01, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");
         input ("3 00:01, KeyReader    , A.kr, keyInsertion, B.ki-1");
@@ -91,8 +90,9 @@ public class SystemTest {
         
         expect("4 00:00, HubDisplay, hd, viewOccupancy, unordered-tuples, 6,"
                 + "DSName, East, North, Status, #Occupied, #DPoints,"
-                + "     A,    0,     0,     OK,         4,        5," 
-                + "     B,  400,   300,    LOW,         0,        3");
+                + "     B,  400,   300,    LOW,         0,        3,"
+                + "     A,    0,     0,     OK,         4,        5" 
+                );
         
         input ("4 00:01, DSTouchScreen, A.ts, viewActivity");
         expect("4 00:01, DSTouchScreen, A.ts, viewPrompt  , Please insert key.");

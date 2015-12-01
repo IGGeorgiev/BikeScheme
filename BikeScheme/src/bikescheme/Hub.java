@@ -3,7 +3,6 @@
  */
 package bikescheme;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,8 @@ import java.util.ArrayList;
 public class Hub implements AddDStationObserver,
 					        ActionsForBikeAndUserObserver,
 					        UserActivitiesObserver,
-					        HubTerminalStatReqObserver {
+					        HubTerminalStatReqObserver,
+					        BankingServerInterface {
     
 	public static final Logger logger = Logger.getLogger("bikescheme");
 	public static final String HUBNAME = "CyclOps.Hub";
@@ -36,6 +36,7 @@ public class Hub implements AddDStationObserver,
 	private Map<String, DStation> dockingStationMap;
 	private KeyIssuer keyIssuer;
 	private List<String>staffIds;
+	private BankServer bankingServer;
 
 	/**
 	 * 
@@ -50,6 +51,7 @@ public class Hub implements AddDStationObserver,
 	
 	public Hub() {
 		// Construct and make connections with interface devices
+	    bankingServer = new BankServer("BankServer");
 		terminal = new HubTerminal("ht");
 		terminal.setObserver(this);
 		terminal.setStatObserver(this);
@@ -112,7 +114,7 @@ public class Hub implements AddDStationObserver,
 		                        charge += tr.getPrice();
 		                    }
 		                    //if(charge != 0){
-		                    //    applyCharges(charge, u.getPersonalDetails(), u.getCardDetails());
+		                    applyCharges(charge, u.getPersonalDetails(), u.getCardDetails());
 		                    //} 
 		                    u.clearTrips();
 		                }
@@ -413,16 +415,11 @@ public class Hub implements AddDStationObserver,
     }
     //======================POSSIBLE CONNECTION TO BANKING SERVER======================
     
-    private BankingServerInterface bsi;
-    
-    public void setBankingServerInterface(BankingServerInterface o){
-        bsi = o;
-    }
     
     public void applyCharges(int charge, String personalDetails, String cardAuthenticationNumber){
       //Applies charges to the given card authentication number relative
       //to the user's personal details
-        //bsi.applyCharges(charge, personalDetails, cardAuthenticationNumber);
+        bankingServer.applyCharges(charge, personalDetails, cardAuthenticationNumber);
     }
 
     
